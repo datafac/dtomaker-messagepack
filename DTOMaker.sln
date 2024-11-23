@@ -12,10 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		version.json = version.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTOMaker.Core", "DTOMaker.Core\DTOMaker.Core.csproj", "{69809F37-28A0-41EF-AB68-B33176CF28D4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTOMaker.Core.Tests", "DTOMaker.Core.Tests\DTOMaker.Core.Tests.csproj", "{137FC234-FB54-4410-904B-26581F95E075}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTOMaker.MemBlocks", "DTOMaker.MemBlocks\DTOMaker.MemBlocks.csproj", "{2B9832B1-EC5B-4262-8D96-B799DB42478A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTOMaker.MemBlocks.Tests", "DTOMaker.MemBlocks.Tests\DTOMaker.MemBlocks.Tests.csproj", "{58E1A5EC-E517-45B9-BAED-1C32D01613B6}"
@@ -42,22 +38,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.CSPoco", "Template
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.CSPoco.Tests", "Template.CSPoco.Tests\Template.CSPoco.Tests.csproj", "{30B61931-74E8-48AA-AC6C-3F0F01A871B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOMaker.Models", "DTOMaker.Models\DTOMaker.Models.csproj", "{ADC41325-68E6-487F-85C9-1A8F54F3FA28}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{69809F37-28A0-41EF-AB68-B33176CF28D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69809F37-28A0-41EF-AB68-B33176CF28D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69809F37-28A0-41EF-AB68-B33176CF28D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69809F37-28A0-41EF-AB68-B33176CF28D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{137FC234-FB54-4410-904B-26581F95E075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{137FC234-FB54-4410-904B-26581F95E075}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{137FC234-FB54-4410-904B-26581F95E075}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{137FC234-FB54-4410-904B-26581F95E075}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B9832B1-EC5B-4262-8D96-B799DB42478A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B9832B1-EC5B-4262-8D96-B799DB42478A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B9832B1-EC5B-4262-8D96-B799DB42478A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -110,10 +96,6 @@ Global
 		{30B61931-74E8-48AA-AC6C-3F0F01A871B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30B61931-74E8-48AA-AC6C-3F0F01A871B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30B61931-74E8-48AA-AC6C-3F0F01A871B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ADC41325-68E6-487F-85C9-1A8F54F3FA28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ADC41325-68E6-487F-85C9-1A8F54F3FA28}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ADC41325-68E6-487F-85C9-1A8F54F3FA28}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ADC41325-68E6-487F-85C9-1A8F54F3FA28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

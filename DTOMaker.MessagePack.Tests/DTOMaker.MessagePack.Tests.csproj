@@ -14,6 +14,8 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="DTOMaker.Core" Version="0.37.2" />
+		<PackageReference Include="DTOMaker.Models" Version="0.37.2" />
 		<PackageReference Include="FluentAssertions" Version="6.12.2" />
 		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.11.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
@@ -27,7 +29,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\DTOMaker.MessagePack\DTOMaker.MessagePack.csproj" />
-	  <ProjectReference Include="..\DTOMaker.Models\DTOMaker.Models.csproj" />
 	</ItemGroup>
 
 </Project>

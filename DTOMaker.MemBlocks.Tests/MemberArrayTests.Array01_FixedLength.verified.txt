@@ -100,13 +100,14 @@ namespace MyOrg.Models.MemBlocks
                 else
                 {
                     // endian mismatch - decode each element
-                    Span<Double> targetSpan = new Double[8];
+                    var target = new Double[8]; // todo alloc!
+                    Span<Double> targetSpan = target.AsSpan();
                     for (int i = 0; i < 8; i++)
                     {
                         var elementSpan = sourceSpan.Slice(8 * i, 8);
                         targetSpan[i] = Codec_Double_LE.ReadFromSpan(elementSpan);
                     }
-                    return targetSpan.ToArray(); // todo alloc!
+                    return target;
                 }
             }
 
