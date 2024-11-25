@@ -10,11 +10,10 @@ using System.Runtime.CompilerServices;
 
 namespace T_DomainName_.CSPoco
 {
-    public interface IEntityBase { }
-    public abstract class EntityBase : IFreezable, IEntityBase, IEquatable<EntityBase>
+    public abstract class EntityBase : IFreezable, IEquatable<EntityBase>
     {
         public EntityBase() { }
-        public EntityBase(IEntityBase source, bool frozen)
+        public EntityBase(object? notUsed, bool frozen)
         {
             _frozen = frozen;
         }

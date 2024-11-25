@@ -15,7 +15,7 @@ namespace T_DomainName_.CSPoco
 {
     //##if false
     using T_MemberType_ = System.Int32;
-    public interface IT_ParentName_ : IEntityBase { }
+    public interface IT_ParentName_ { }
     public interface IT_EntityName_ : IT_ParentName_
     {
         //##if MemberIsNullable
