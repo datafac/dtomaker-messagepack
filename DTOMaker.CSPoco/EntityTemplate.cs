@@ -3,17 +3,20 @@
 // NuGet: https://www.nuget.org/packages/DTOMaker.CSPoco
 // Warning: Changes made to this file will be lost if re-generated.
 // </auto-generated>
+//##if false
+#pragma warning disable CS0618 // Type or member is obsolete
+//##endif
 #pragma warning disable CS0414
 #nullable enable
 using DataFac.Runtime;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace T_DomainName_.CSPoco
 {
     //##if false
     using T_MemberType_ = System.Int32;
-    public interface IT_EntityName_
+    public interface IT_ParentName_ : IEntityBase { }
+    public interface IT_EntityName_ : IT_ParentName_
     {
         //##if MemberIsNullable
         T_MemberType_? T_ScalarNullableMemberName_ { get; set; }
@@ -22,8 +25,20 @@ namespace T_DomainName_.CSPoco
         //##endif
         ReadOnlyMemory<T_MemberType_> T_VectorMemberName_ { get; set; }
     }
+    public class T_ParentName_ : EntityBase, IT_ParentName_, IEquatable<T_ParentName_>
+    {
+        public T_ParentName_() { }
+        public T_ParentName_(IT_ParentName_ source, bool frozen = false) : base(source, frozen) { }
+        public bool Equals(T_ParentName_? other)
+        {
+            if (ReferenceEquals(this, other)) return true;
+            if (other is null) return false;
+            if (!base.Equals(other)) return false;
+            return true;
+        }
+    }
     //##endif
-    public partial class T_EntityName_ : IT_EntityName_, IFreezable, IEquatable<T_EntityName_>
+    public partial class T_EntityName_ : T_ParentName_, IT_EntityName_, IEquatable<T_EntityName_>
     {
         //##if false
         private const int T_ScalarNullableMemberSequence_ = 1;
@@ -32,34 +47,18 @@ namespace T_DomainName_.CSPoco
         private const string T_MemberObsoleteMessage_ = null;
         private const bool T_MemberObsoleteIsError_ = false;
         //##endif
-        // todo move to base
-        private volatile bool _frozen;
-        public bool IsFrozen() => _frozen;
-        public IFreezable PartCopy() => new T_EntityName_(this);
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private void ThrowIsFrozenException(string? methodName) => throw new InvalidOperationException($"Cannot call {methodName} when frozen.");
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private ref T IfNotFrozen<T>(ref T value, [CallerMemberName] string? methodName = null)
+        protected override void OnFreeze()
         {
-            if (_frozen) ThrowIsFrozenException(methodName);
-            return ref value;
+            base.OnFreeze();
+            // todo freezable members
         }
 
-        public void Freeze()
-        {
-            if (_frozen) return;
-            _frozen = true;
-            // todo freeze base
-            // todo freeze model type refs
-        }
+        protected override IFreezable OnPartCopy() => new T_EntityName_(this);
 
         public T_EntityName_() { }
-        public T_EntityName_(IT_EntityName_ source, bool frozen = false)
+        public T_EntityName_(IT_EntityName_ source, bool frozen = false) : base(source, frozen)
         {
-            _frozen = frozen;
-            // todo base ctor
             //##foreach Members
             // todo freezable members
             //##if MemberIsArray
@@ -116,7 +115,7 @@ namespace T_DomainName_.CSPoco
         {
             if (ReferenceEquals(this, other)) return true;
             if (other is null) return false;
-            // todo if (!base.Equals(other)) return false;
+            if (!base.Equals(other)) return false;
             //##foreach Members
             //##if MemberIsArray
             if (!_T_VectorMemberName_.Span.SequenceEqual(other.T_VectorMemberName_.Span)) return false;
@@ -161,8 +160,9 @@ namespace T_DomainName_.CSPoco
         private int? _hashCode;
         public override int GetHashCode()
         {
-            if (!_frozen) return CalcHashCode();
-            if (_hashCode is null) _hashCode = CalcHashCode();
+            if (_hashCode.HasValue) return _hashCode.Value;
+            if (!this.IsFrozen()) return CalcHashCode();
+            _hashCode = CalcHashCode();
             return _hashCode.Value;
         }
 

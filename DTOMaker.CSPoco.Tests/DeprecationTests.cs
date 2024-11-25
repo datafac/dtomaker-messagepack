@@ -35,11 +35,12 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Should().HaveCount(1);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
+            generatorResult.GeneratedSources.Should().HaveCount(2);
+            GeneratedSourceResult domainSource = generatorResult.GeneratedSources[0];
+            GeneratedSourceResult entitySource = generatorResult.GeneratedSources[1];
 
             // custom generation checks
-            string outputCode = string.Join(Environment.NewLine, outputSource.SourceText.Lines.Select(tl => tl.ToString()));
+            string outputCode = string.Join(Environment.NewLine, entitySource.SourceText.Lines.Select(tl => tl.ToString()));
             await Verifier.Verify(outputCode);
         }
 
@@ -67,11 +68,12 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Should().HaveCount(1);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
+            generatorResult.GeneratedSources.Should().HaveCount(2);
+            GeneratedSourceResult domainSource = generatorResult.GeneratedSources[0];
+            GeneratedSourceResult entitySource = generatorResult.GeneratedSources[1];
 
             // custom generation checks
-            string outputCode = string.Join(Environment.NewLine, outputSource.SourceText.Lines.Select(tl => tl.ToString()));
+            string outputCode = string.Join(Environment.NewLine, entitySource.SourceText.Lines.Select(tl => tl.ToString()));
             await Verifier.Verify(outputCode);
         }
 
@@ -99,11 +101,12 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Should().HaveCount(1);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
+            generatorResult.GeneratedSources.Should().HaveCount(2);
+            GeneratedSourceResult domainSource = generatorResult.GeneratedSources[0];
+            GeneratedSourceResult entitySource = generatorResult.GeneratedSources[1];
 
             // custom generation checks
-            string outputCode = string.Join(Environment.NewLine, outputSource.SourceText.Lines.Select(tl => tl.ToString()));
+            string outputCode = string.Join(Environment.NewLine, entitySource.SourceText.Lines.Select(tl => tl.ToString()));
             await Verifier.Verify(outputCode);
         }
 

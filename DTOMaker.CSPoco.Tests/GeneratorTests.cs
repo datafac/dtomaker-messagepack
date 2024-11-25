@@ -31,8 +31,8 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Length.Should().Be(1);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
+            generatorResult.GeneratedSources.Should().HaveCount(2);
+            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[1];
 
             // custom generation checks
             outputSource.HintName.Should().Be("MyOrg.Models.MyDTO.CSPoco.g.cs");
@@ -61,8 +61,8 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Length.Should().Be(1);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
+            generatorResult.GeneratedSources.Should().HaveCount(2);
+            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[1];
 
             // custom generation checks
             outputSource.HintName.Should().Be("MyOrg.Models.MyDTO.CSPoco.g.cs");
@@ -92,8 +92,8 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Length.Should().Be(1);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
+            generatorResult.GeneratedSources.Should().HaveCount(2);
+            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[1];
 
             // custom generation checks
             outputSource.HintName.Should().Be("MyOrg.Models.MyDTO.CSPoco.g.cs");
@@ -130,13 +130,17 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
 
             // custom generation checks
-            generatorResult.GeneratedSources.Length.Should().Be(2);
+            generatorResult.GeneratedSources.Should().HaveCount(3);
             {
                 GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
-                outputSource.HintName.Should().Be("MyOrg.Models.MyFirstDTO.CSPoco.g.cs");
+                outputSource.HintName.Should().Be("MyOrg.Models.EntityBase.CSPoco.g.cs");
             }
             {
                 GeneratedSourceResult outputSource = generatorResult.GeneratedSources[1];
+                outputSource.HintName.Should().Be("MyOrg.Models.MyFirstDTO.CSPoco.g.cs");
+            }
+            {
+                GeneratedSourceResult outputSource = generatorResult.GeneratedSources[2];
                 outputSource.HintName.Should().Be("MyOrg.Models.MyOtherDTO.CSPoco.g.cs");
                 string outputCode = string.Join(Environment.NewLine, outputSource.SourceText.Lines.Select(tl => tl.ToString()));
                 await Verifier.Verify(outputCode);
@@ -164,8 +168,8 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Length.Should().Be(1);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
+            generatorResult.GeneratedSources.Should().HaveCount(2);
+            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[1];
 
             // custom generation checks
             outputSource.HintName.Should().Be("MyOrg.Models.MyDTO.CSPoco.g.cs");
@@ -194,8 +198,8 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Length.Should().Be(1);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
+            generatorResult.GeneratedSources.Should().HaveCount(2);
+            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[1];
 
             // custom generation checks
             outputSource.HintName.Should().Be("MyOrg.Models.MyDTO.CSPoco.g.cs");
@@ -224,8 +228,8 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Length.Should().Be(1);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
+            generatorResult.GeneratedSources.Should().HaveCount(2);
+            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[1];
 
             // custom generation checks
             outputSource.HintName.Should().Be("MyOrg.Models.MyDTO.CSPoco.g.cs");

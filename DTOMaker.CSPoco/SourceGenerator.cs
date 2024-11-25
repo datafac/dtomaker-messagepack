@@ -58,6 +58,18 @@ namespace DTOMaker.CSPoco
             }
         }
 
+        private string GenerateSourceText(ILanguage language, IModelScope outerScope, string templateName)
+        {
+            var template = Assembly.GetExecutingAssembly().GetTemplate(templateName);
+            var processor = new TemplateProcessor();
+            var builder = new StringBuilder();
+            foreach (string line in processor.ProcessTemplate(template, language, outerScope))
+            {
+                builder.AppendLine(line);
+            }
+            return builder.ToString();
+        }
+
         public void Execute(GeneratorExecutionContext context)
         {
             if (context.SyntaxContextReceiver is not SyntaxReceiver syntaxReceiver) return;
@@ -71,8 +83,20 @@ namespace DTOMaker.CSPoco
             foreach (var domain in syntaxReceiver.Domains.Values)
             {
                 EmitDiagnostics(context, domain);
-                var domainTokens = ImmutableDictionary<string, object?>.Empty
-                    .Add("DomainName", domain.Name);
+
+                var language = Language_CSharp.Instance;
+                var domainScope = new ModelScope_Domain(language, domain, Array.Empty<KeyValuePair<string, object?>>());
+                //var domainTokens = ImmutableDictionary<string, object?>.Empty
+                //    .Add("DomainName", domain.Name);
+
+                // common/domain code
+                {
+                    string sourceText = GenerateSourceText(language, domainScope, "DTOMaker.CSPoco.DomainTemplate.cs");
+                    context.AddSource(
+                        $"{domain.Name}.EntityBase.CSPoco.g.cs",
+                        sourceText);
+                }
+
                 foreach (var entity in domain.Entities.Values.OrderBy(e => e.Name))
                 {
                     // run checks
@@ -82,17 +106,11 @@ namespace DTOMaker.CSPoco
                         EmitDiagnostics(context, member);
                     }
 
-                    string hintName = $"{domain.Name}.{entity.Name}.CSPoco.g.cs";
-                    var builder = new StringBuilder();
-                    var template = Assembly.GetExecutingAssembly().GetTemplate("DTOMaker.CSPoco.EntityTemplate.cs");
-                    var processor = new TemplateProcessor();
-                    var language = Language_CSharp.Instance;
-                    var outerScope = new ModelScope_Entity(language, entity, domainTokens);
-                    foreach (string line in processor.ProcessTemplate(template, language, outerScope))
-                    {
-                        builder.AppendLine(line);
-                    }
-                    context.AddSource(hintName, builder.ToString());
+                    var entityScope = new ModelScope_Entity(language, entity, domainScope.Variables);
+                    string sourceText = GenerateSourceText(language, entityScope, "DTOMaker.CSPoco.EntityTemplate.cs");
+                    context.AddSource(
+                        $"{domain.Name}.{entity.Name}.CSPoco.g.cs",
+                        sourceText);
                 }
             }
         }

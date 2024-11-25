@@ -9,10 +9,10 @@ using Xunit;
 
 namespace DTOMaker.CSPoco.Tests
 {
-    public class EntityAttributeTests
+    public class CommonCodeTests
     {
         [Fact]
-        public async Task EntityWithInterface()
+        public async Task Common01_EntityBase()
         {
             var inputSource =
                 """
@@ -31,12 +31,13 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Length.Should().Be(1);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[0];
+            generatorResult.GeneratedSources.Length.Should().Be(2);
+            GeneratedSourceResult commonSource = generatorResult.GeneratedSources[0];
+            //GeneratedSourceResult entitySource = generatorResult.GeneratedSources[1];
 
             // custom generation checks
-            outputSource.HintName.Should().Be("MyOrg.Models.MyDTO.CSPoco.g.cs");
-            string outputCode = string.Join(Environment.NewLine, outputSource.SourceText.Lines.Select(tl => tl.ToString()));
+            commonSource.HintName.Should().Be("MyOrg.Models.EntityBase.CSPoco.g.cs");
+            string outputCode = string.Join(Environment.NewLine, commonSource.SourceText.Lines.Select(tl => tl.ToString()));
             await Verifier.Verify(outputCode);
         }
 
