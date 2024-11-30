@@ -1,6 +1,6 @@
 # DTOMaker
 
-Source generators for various flavours of DTOs and POCOs.
+Source generators for various kinds of DTOs and POCOs.
 
 [![Build-Deploy](https://github.com/datafac/dtomaker/actions/workflows/dotnet.yml/badge.svg)](https://github.com/datafac/dtomaker/actions/workflows/dotnet.yml)
 

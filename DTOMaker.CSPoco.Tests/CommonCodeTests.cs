@@ -12,7 +12,7 @@ namespace DTOMaker.CSPoco.Tests
     public class CommonCodeTests
     {
         [Fact]
-        public async Task Common01_EntityBase()
+        public async Task Common01_EntityBaseA()
         {
             var inputSource =
                 """
@@ -32,14 +32,79 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
             generatorResult.GeneratedSources.Length.Should().Be(2);
-            GeneratedSourceResult commonSource = generatorResult.GeneratedSources[0];
-            //GeneratedSourceResult entitySource = generatorResult.GeneratedSources[1];
+            GeneratedSourceResult source = generatorResult.GeneratedSources[0];
 
             // custom generation checks
-            commonSource.HintName.Should().Be("MyOrg.Models.EntityBase.CSPoco.g.cs");
-            string outputCode = string.Join(Environment.NewLine, commonSource.SourceText.Lines.Select(tl => tl.ToString()));
+            source.HintName.Should().Be("MyOrg.Models.EntityBase.CSPoco.g.cs");
+            string outputCode = string.Join(Environment.NewLine, source.SourceText.Lines.Select(tl => tl.ToString()));
             await Verifier.Verify(outputCode);
         }
 
+        [Fact]
+        public async Task Common02_EntityBaseB()
+        {
+            var inputSource =
+                """
+                using DTOMaker.Models;
+                namespace MyOrg.Models
+                {
+                    [Entity]
+                    public interface IMyBase
+                    {
+                    }
+                    [Entity]
+                    public interface IMyDTO : IMyBase
+                    {
+                    }
+                }
+                """;
+
+            var generatorResult = GeneratorTestHelper.RunSourceGenerator(inputSource, LanguageVersion.LatestMajor);
+            generatorResult.Exception.Should().BeNull();
+            generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
+            generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
+            generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+            generatorResult.GeneratedSources.Length.Should().Be(3);
+            //GeneratedSourceResult commonSource = generatorResult.GeneratedSources[0];
+            GeneratedSourceResult source = generatorResult.GeneratedSources[1];
+
+            // custom generation checks
+            source.HintName.Should().Be("MyOrg.Models.MyBase.CSPoco.g.cs");
+            string outputCode = string.Join(Environment.NewLine, source.SourceText.Lines.Select(tl => tl.ToString()));
+            await Verifier.Verify(outputCode);
+        }
+
+        [Fact]
+        public async Task Common03_EntityBaseC()
+        {
+            var inputSource =
+                """
+                using DTOMaker.Models;
+                namespace MyOrg.Models
+                {
+                    [Entity]
+                    public interface IMyBase
+                    {
+                    }
+                    [Entity]
+                    public interface IMyDTO : IMyBase
+                    {
+                    }
+                }
+                """;
+
+            var generatorResult = GeneratorTestHelper.RunSourceGenerator(inputSource, LanguageVersion.LatestMajor);
+            generatorResult.Exception.Should().BeNull();
+            generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
+            generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
+            generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+            generatorResult.GeneratedSources.Length.Should().Be(3);
+            GeneratedSourceResult source = generatorResult.GeneratedSources[2];
+
+            // custom generation checks
+            source.HintName.Should().Be("MyOrg.Models.MyDTO.CSPoco.g.cs");
+            string outputCode = string.Join(Environment.NewLine, source.SourceText.Lines.Select(tl => tl.ToString()));
+            await Verifier.Verify(outputCode);
+        }
     }
 }
