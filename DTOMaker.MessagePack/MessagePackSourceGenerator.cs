@@ -8,10 +8,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace DTOMaker.CSPoco
+namespace DTOMaker.MessagePack
 {
     [Generator(LanguageNames.CSharp)]
-    public class CSPocoSourceGenerator : ISourceGenerator
+    public class MessagePackSourceGenerator : ISourceGenerator
     {
         public void Initialize(GeneratorInitializationContext context)
         {
@@ -75,31 +75,29 @@ namespace DTOMaker.CSPoco
             if (context.SyntaxContextReceiver is not SyntaxReceiver syntaxReceiver) return;
 
             //// check that the users compilation references the expected libraries
-            //CheckReferencedAssemblyNamesInclude(context, typeof(DTOMaker.Models.DomainAttribute).Assembly);
+            //CheckReferencedAssemblyNamesInclude(context, typeof(Models.DomainAttribute).Assembly);
 
             Version fv = new Version(ThisAssembly.AssemblyFileVersion);
             string shortVersion = $"{fv.Major}.{fv.Minor}";
+            var language = Language_CSharp.Instance;
 
             foreach (var domain in syntaxReceiver.Domains.Values)
             {
                 EmitDiagnostics(context, domain);
 
-                var language = Language_CSharp.Instance;
                 var domainScope = new ModelScope_Domain(language, domain, Array.Empty<KeyValuePair<string, object?>>());
-                //var domainTokens = ImmutableDictionary<string, object?>.Empty
-                //    .Add("DomainName", domain.Name);
 
-                // common/domain code
+                // emit entity base
                 {
-                    string sourceText = GenerateSourceText(language, domainScope, "DTOMaker.CSPoco.DomainTemplate.cs");
+                    string sourceText = GenerateSourceText(language, domainScope, "DTOMaker.MessagePack.DomainTemplate.cs");
                     context.AddSource(
-                        $"{domain.Name}.EntityBase.CSPoco.g.cs",
+                        $"{domain.Name}.EntityBase.MessagePack.g.cs",
                         sourceText);
                 }
 
+                // emit each entity
                 foreach (var entity in domain.Entities.Values.OrderBy(e => e.Name))
                 {
-                    // run checks
                     EmitDiagnostics(context, entity);
                     foreach (var member in entity.Members.Values.OrderBy(m => m.Sequence))
                     {
@@ -107,9 +105,9 @@ namespace DTOMaker.CSPoco
                     }
 
                     var entityScope = new ModelScope_Entity(language, entity, domainScope.Variables);
-                    string sourceText = GenerateSourceText(language, entityScope, "DTOMaker.CSPoco.EntityTemplate.cs");
+                    string sourceText = GenerateSourceText(language, entityScope, "DTOMaker.MessagePack.EntityTemplate.cs");
                     context.AddSource(
-                        $"{domain.Name}.{entity.Name}.CSPoco.g.cs",
+                        $"{domain.Name}.{entity.Name}.MessagePack.g.cs",
                         sourceText);
                 }
             }

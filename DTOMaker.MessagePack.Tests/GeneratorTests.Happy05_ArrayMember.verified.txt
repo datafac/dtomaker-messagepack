@@ -13,38 +13,20 @@ using System.Runtime.CompilerServices;
 namespace MyOrg.Models.MessagePack
 {
     [MessagePackObject]
-    public partial class MyDTO : IMyDTO, IFreezable
+    public partial class MyDTO : EntityBase, IMyDTO, IFreezable
     {
-        // todo move to base
-        [IgnoreMember]
-        private volatile bool _frozen;
-        public bool IsFrozen() => _frozen;
-        public IFreezable PartCopy() => new MyDTO(this);
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private void ThrowIsFrozenException(string? methodName) => throw new InvalidOperationException($"Cannot call {methodName} when frozen.");
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private ref T IfNotFrozen<T>(ref T value, [CallerMemberName] string? methodName = null)
+        protected override void OnFreeze()
         {
-            if (_frozen) ThrowIsFrozenException(methodName);
-            return ref value;
+            base.OnFreeze();
+            // todo freezable members
         }
 
-        public void Freeze()
-        {
-            if (_frozen) return;
-            _frozen = true;
-            // todo freeze base
-            // todo freeze model type refs
-        }
+        protected override IFreezable OnPartCopy() => new MyDTO(this);
 
         public MyDTO() { }
-        public MyDTO(IMyDTO source, bool frozen = false)
+        public MyDTO(IMyDTO source, bool frozen = false) : base(source, frozen)
         {
-            _frozen = frozen;
-            // todo base ctor
-            // todo freezable members
             _Field1 = source.Field1;
         }
 
@@ -57,6 +39,41 @@ namespace MyOrg.Models.MessagePack
             set => _Field1 = IfNotFrozen(ref value);
         }
 
+
+        public bool Equals(MyDTO? other)
+        {
+            if (ReferenceEquals(this, other)) return true;
+            if (other is null) return false;
+            if (!base.Equals(other)) return false;
+            if (!_Field1.Span.SequenceEqual(other.Field1.Span)) return false;
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is MyDTO other && Equals(other);
+        }
+
+        private int CalcHashCode()
+        {
+            HashCode result = new HashCode();
+            // todo result.Add(base.GetHashCode());
+            result.Add(_Field1.Length);
+            for (int i = 0; i < _Field1.Length; i++)
+            {
+                result.Add(_Field1.Span[i]);
+            }
+            return result.ToHashCode();
+        }
+
+        private int? _hashCode;
+        public override int GetHashCode()
+        {
+            if (_hashCode.HasValue) return _hashCode.Value;
+            if (!this.IsFrozen()) return CalcHashCode();
+            _hashCode = CalcHashCode();
+            return _hashCode.Value;
+        }
 
     }
 }

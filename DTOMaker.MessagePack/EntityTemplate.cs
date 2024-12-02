@@ -14,7 +14,8 @@ namespace T_DomainName_.MessagePack
 {
     //##if false
     using T_MemberType_ = System.Int32;
-    public interface IT_EntityName_
+    public interface IT_ParentName_ { }
+    public interface IT_EntityName_ : IT_ParentName_
     {
         //##if MemberIsNullable
         T_MemberType_? T_ScalarNullableMemberName_ { get; set; }
@@ -23,9 +24,21 @@ namespace T_DomainName_.MessagePack
         //##endif
         ReadOnlyMemory<T_MemberType_> T_VectorMemberName_ { get; set; }
     }
+    public class T_ParentName_ : EntityBase, IT_ParentName_, IEquatable<T_ParentName_>
+    {
+        public T_ParentName_() { }
+        public T_ParentName_(IT_ParentName_ source, bool frozen = false) : base(source, frozen) { }
+        public bool Equals(T_ParentName_? other)
+        {
+            if (ReferenceEquals(this, other)) return true;
+            if (other is null) return false;
+            if (!base.Equals(other)) return false;
+            return true;
+        }
+    }
     //##endif
     [MessagePackObject]
-    public partial class T_EntityName_ : IT_EntityName_, IFreezable
+    public partial class T_EntityName_ : T_ParentName_, IT_EntityName_, IFreezable
     {
         //##if false
         private const int T_ScalarNullableMemberSequence_ = 1;
@@ -34,37 +47,19 @@ namespace T_DomainName_.MessagePack
         private const string T_MemberObsoleteMessage_ = null;
         private const bool T_MemberObsoleteIsError_ = false;
         //##endif
-        // todo move to base
-        [IgnoreMember]
-        private volatile bool _frozen;
-        public bool IsFrozen() => _frozen;
-        public IFreezable PartCopy() => new T_EntityName_(this);
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private void ThrowIsFrozenException(string? methodName) => throw new InvalidOperationException($"Cannot call {methodName} when frozen.");
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private ref T IfNotFrozen<T>(ref T value, [CallerMemberName] string? methodName = null)
+        protected override void OnFreeze()
         {
-            if (_frozen) ThrowIsFrozenException(methodName);
-            return ref value;
+            base.OnFreeze();
+            // todo freezable members
         }
 
-        public void Freeze()
-        {
-            if (_frozen) return;
-            _frozen = true;
-            // todo freeze base
-            // todo freeze model type refs
-        }
+        protected override IFreezable OnPartCopy() => new T_EntityName_(this);
 
         public T_EntityName_() { }
-        public T_EntityName_(IT_EntityName_ source, bool frozen = false)
+        public T_EntityName_(IT_EntityName_ source, bool frozen = false) : base(source, frozen)
         {
-            _frozen = frozen;
-            // todo base ctor
             //##foreach Members
-            // todo freezable members
             //##if MemberIsArray
             _T_VectorMemberName_ = source.T_VectorMemberName_;
             //##else
@@ -120,6 +115,61 @@ namespace T_DomainName_.MessagePack
 
         //##endif
         //##endfor
+
+        public bool Equals(T_EntityName_? other)
+        {
+            if (ReferenceEquals(this, other)) return true;
+            if (other is null) return false;
+            if (!base.Equals(other)) return false;
+            //##foreach Members
+            //##if MemberIsArray
+            if (!_T_VectorMemberName_.Span.SequenceEqual(other.T_VectorMemberName_.Span)) return false;
+            //##else
+            //##if MemberIsNullable
+            if (!_T_ScalarNullableMemberName_.Equals(other.T_ScalarNullableMemberName_)) return false;
+            //##else
+            if (!_T_ScalarRequiredMemberName_.Equals(other.T_ScalarRequiredMemberName_)) return false;
+            //##endif
+            //##endif
+            //##endfor
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is T_EntityName_ other && Equals(other);
+        }
+
+        private int CalcHashCode()
+        {
+            HashCode result = new HashCode();
+            // todo result.Add(base.GetHashCode());
+            //##foreach Members
+            //##if MemberIsArray
+            result.Add(_T_VectorMemberName_.Length);
+            for (int i = 0; i < _T_VectorMemberName_.Length; i++)
+            {
+                result.Add(_T_VectorMemberName_.Span[i]);
+            }
+            //##else
+            //##if MemberIsNullable
+            result.Add(_T_ScalarNullableMemberName_);
+            //##else
+            result.Add(_T_ScalarRequiredMemberName_);
+            //##endif
+            //##endif
+            //##endfor
+            return result.ToHashCode();
+        }
+
+        private int? _hashCode;
+        public override int GetHashCode()
+        {
+            if (_hashCode.HasValue) return _hashCode.Value;
+            if (!this.IsFrozen()) return CalcHashCode();
+            _hashCode = CalcHashCode();
+            return _hashCode.Value;
+        }
 
     }
 }

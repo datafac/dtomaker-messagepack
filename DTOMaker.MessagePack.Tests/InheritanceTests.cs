@@ -9,23 +9,19 @@ using Xunit;
 
 namespace DTOMaker.MessagePack.Tests
 {
-    public class DeprecationTests
+    public class InheritanceTests
     {
         [Fact]
-        public async Task ObsoleteMember01()
+        public async Task Common01_EntityBaseA()
         {
             var inputSource =
                 """
-                using System;
                 using DTOMaker.Models;
                 namespace MyOrg.Models
                 {
                     [Entity]
                     public interface IMyDTO
                     {
-                        [Obsolete]
-                        [Member(1)] 
-                        double Field1 { get; set; }
                     }
                 }
                 """;
@@ -35,29 +31,30 @@ namespace DTOMaker.MessagePack.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Should().HaveCount(2);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[1];
+            generatorResult.GeneratedSources.Length.Should().Be(2);
+            GeneratedSourceResult source = generatorResult.GeneratedSources[0];
 
             // custom generation checks
-            string outputCode = string.Join(Environment.NewLine, outputSource.SourceText.Lines.Select(tl => tl.ToString()));
+            source.HintName.Should().Be("MyOrg.Models.EntityBase.MessagePack.g.cs");
+            string outputCode = string.Join(Environment.NewLine, source.SourceText.Lines.Select(tl => tl.ToString()));
             await Verifier.Verify(outputCode);
         }
 
         [Fact]
-        public async Task ObsoleteMember02()
+        public async Task Common02_EntityBaseB()
         {
             var inputSource =
                 """
-                using System;
                 using DTOMaker.Models;
                 namespace MyOrg.Models
                 {
                     [Entity]
-                    public interface IMyDTO
+                    public interface IMyBase
                     {
-                        [Obsolete("Removed")]
-                        [Member(1)] 
-                        double Field1 { get; set; }
+                    }
+                    [Entity]
+                    public interface IMyDTO : IMyBase
+                    {
                     }
                 }
                 """;
@@ -67,29 +64,30 @@ namespace DTOMaker.MessagePack.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Should().HaveCount(2);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[1];
+            generatorResult.GeneratedSources.Length.Should().Be(3);
+            GeneratedSourceResult source = generatorResult.GeneratedSources[1];
 
             // custom generation checks
-            string outputCode = string.Join(Environment.NewLine, outputSource.SourceText.Lines.Select(tl => tl.ToString()));
+            source.HintName.Should().Be("MyOrg.Models.MyBase.MessagePack.g.cs");
+            string outputCode = string.Join(Environment.NewLine, source.SourceText.Lines.Select(tl => tl.ToString()));
             await Verifier.Verify(outputCode);
         }
 
         [Fact]
-        public async Task ObsoleteMember03()
+        public async Task Common03_EntityBaseC()
         {
             var inputSource =
                 """
-                using System;
                 using DTOMaker.Models;
                 namespace MyOrg.Models
                 {
                     [Entity]
-                    public interface IMyDTO
+                    public interface IMyBase
                     {
-                        [Obsolete("Removed", true)]
-                        [Member(1)] 
-                        double Field1 { get; set; }
+                    }
+                    [Entity]
+                    public interface IMyDTO : IMyBase
+                    {
                     }
                 }
                 """;
@@ -99,13 +97,13 @@ namespace DTOMaker.MessagePack.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
-            generatorResult.GeneratedSources.Should().HaveCount(2);
-            GeneratedSourceResult outputSource = generatorResult.GeneratedSources[1];
+            generatorResult.GeneratedSources.Length.Should().Be(3);
+            GeneratedSourceResult source = generatorResult.GeneratedSources[2];
 
             // custom generation checks
-            string outputCode = string.Join(Environment.NewLine, outputSource.SourceText.Lines.Select(tl => tl.ToString()));
+            source.HintName.Should().Be("MyOrg.Models.MyDTO.MessagePack.g.cs");
+            string outputCode = string.Join(Environment.NewLine, source.SourceText.Lines.Select(tl => tl.ToString()));
             await Verifier.Verify(outputCode);
         }
-
     }
 }

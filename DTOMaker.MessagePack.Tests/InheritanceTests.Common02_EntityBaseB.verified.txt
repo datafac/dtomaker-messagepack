@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 namespace MyOrg.Models.MessagePack
 {
     [MessagePackObject]
-    public partial class MyDTO : EntityBase, IMyDTO, IFreezable
+    public partial class MyBase : EntityBase, IMyBase, IFreezable
     {
 
         protected override void OnFreeze()
@@ -22,43 +22,31 @@ namespace MyOrg.Models.MessagePack
             // todo freezable members
         }
 
-        protected override IFreezable OnPartCopy() => new MyDTO(this);
+        protected override IFreezable OnPartCopy() => new MyBase(this);
 
-        public MyDTO() { }
-        public MyDTO(IMyDTO source, bool frozen = false) : base(source, frozen)
+        public MyBase() { }
+        public MyBase(IMyBase source, bool frozen = false) : base(source, frozen)
         {
-            _Field1 = source.Field1;
-        }
-
-        [IgnoreMember]
-        private String? _Field1;
-        [Key(1)]
-        public String? Field1
-        {
-            get => _Field1;
-            set => _Field1 = IfNotFrozen(ref value);
         }
 
 
-        public bool Equals(MyDTO? other)
+        public bool Equals(MyBase? other)
         {
             if (ReferenceEquals(this, other)) return true;
             if (other is null) return false;
             if (!base.Equals(other)) return false;
-            if (!_Field1.Equals(other.Field1)) return false;
             return true;
         }
 
         public override bool Equals(object? obj)
         {
-            return obj is MyDTO other && Equals(other);
+            return obj is MyBase other && Equals(other);
         }
 
         private int CalcHashCode()
         {
             HashCode result = new HashCode();
             // todo result.Add(base.GetHashCode());
-            result.Add(_Field1);
             return result.ToHashCode();
         }
 
