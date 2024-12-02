@@ -11,6 +11,10 @@ using System.Runtime.CompilerServices;
 
 namespace T_DomainName_.MessagePack
 {
+    [MessagePackObject]
+    //##foreach Entities
+    [Union(T_EntityName_.EntityIntTag, typeof(T_EntityName_))]
+    //##endfor
     public abstract class EntityBase : IFreezable, IEquatable<EntityBase>
     {
         public EntityBase() { }

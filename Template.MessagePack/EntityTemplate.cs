@@ -8,7 +8,6 @@
 using DataFac.Runtime;
 using MessagePack;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace T_DomainName_.MessagePack
 {
@@ -46,8 +45,10 @@ namespace T_DomainName_.MessagePack
         private const int T_VectorMemberSequence_ = 3;
         private const string T_MemberObsoleteMessage_ = null;
         private const bool T_MemberObsoleteIsError_ = false;
+        private const int T_EntityIntTag_ = 1;
         //##endif
 
+        public const int EntityIntTag = T_EntityIntTag_;
         protected override void OnFreeze()
         {
             base.OnFreeze();

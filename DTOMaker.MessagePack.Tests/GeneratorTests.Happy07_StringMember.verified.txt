@@ -8,7 +8,6 @@
 using DataFac.Runtime;
 using MessagePack;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace MyOrg.Models.MessagePack
 {
@@ -16,6 +15,7 @@ namespace MyOrg.Models.MessagePack
     public partial class MyDTO : EntityBase, IMyDTO, IFreezable
     {
 
+        public const int EntityIntTag = T_EntityIntTag_;
         protected override void OnFreeze()
         {
             base.OnFreeze();
