@@ -9,7 +9,7 @@ using Xunit;
 
 namespace DTOMaker.CSPoco.Tests
 {
-    public class CommonCodeTests
+    public class InheritanceTests
     {
         [Fact]
         public async Task Common01_EntityBaseA()
@@ -65,7 +65,6 @@ namespace DTOMaker.CSPoco.Tests
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
             generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
             generatorResult.GeneratedSources.Length.Should().Be(3);
-            //GeneratedSourceResult commonSource = generatorResult.GeneratedSources[0];
             GeneratedSourceResult source = generatorResult.GeneratedSources[1];
 
             // custom generation checks
