@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 namespace MyOrg.Models.MessagePack
 {
     [MessagePackObject]
-    [Union(MyDTO.EntityIntTag, typeof(MyDTO))]
+    [Union(MyDTO.EntityTag, typeof(MyDTO))]
     public abstract class EntityBase : IFreezable, IEquatable<EntityBase>
     {
         public EntityBase() { }

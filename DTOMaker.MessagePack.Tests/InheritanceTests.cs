@@ -19,7 +19,7 @@ namespace DTOMaker.MessagePack.Tests
                 using DTOMaker.Models;
                 namespace MyOrg.Models
                 {
-                    [Entity]
+                    [Entity(1)]
                     public interface IMyDTO
                     {
                     }
@@ -48,11 +48,11 @@ namespace DTOMaker.MessagePack.Tests
                 using DTOMaker.Models;
                 namespace MyOrg.Models
                 {
-                    [Entity]
+                    [Entity(1)]
                     public interface IMyBase
                     {
                     }
-                    [Entity]
+                    [Entity(2)]
                     public interface IMyDTO : IMyBase
                     {
                     }
@@ -81,11 +81,11 @@ namespace DTOMaker.MessagePack.Tests
                 using DTOMaker.Models;
                 namespace MyOrg.Models
                 {
-                    [Entity]
+                    [Entity(1)]
                     public interface IMyBase
                     {
                     }
-                    [Entity]
+                    [Entity(2)]
                     public interface IMyDTO : IMyBase
                     {
                     }

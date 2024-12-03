@@ -13,7 +13,7 @@ namespace T_DomainName_.MessagePack
 {
     [MessagePackObject]
     //##foreach Entities
-    [Union(T_EntityName_.EntityIntTag, typeof(T_EntityName_))]
+    [Union(T_EntityName_.EntityTag, typeof(T_EntityName_))]
     //##endfor
     public abstract class EntityBase : IFreezable, IEquatable<EntityBase>
     {

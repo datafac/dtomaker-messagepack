@@ -15,7 +15,7 @@ namespace MyOrg.Models.MessagePack
     public partial class MyDTO : EntityBase, IMyDTO, IFreezable
     {
 
-        public const int EntityIntTag = T_EntityIntTag_;
+        public const int EntityTag = 1;
         protected override void OnFreeze()
         {
             base.OnFreeze();
