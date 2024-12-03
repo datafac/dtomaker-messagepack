@@ -13,25 +13,24 @@ namespace DTOMaker.MessagePack
             Dictionary<int, TargetEntity> map = new Dictionary<int, TargetEntity>();
             foreach (var entity in this.Entities.Values)
             {
-                // todo invalid tag unit tests
-                int tag = entity.IntTag;
+                int tag = entity.Tag;
                 if (tag == 0)
                 {
+                    // undefined!
                     return new SyntaxDiagnostic(
                         DiagnosticId.DMMP0002, "Invalid entity tag", DiagnosticCategory.Design, entity.Location, DiagnosticSeverity.Error,
-                        $"An entity tag must be defined.");
+                        $"Entity tag must be > 0.");
                 }
+
                 if (map.TryGetValue(tag, out var otherEntity))
                 {
                     // duplicate!
                     return new SyntaxDiagnostic(
                         DiagnosticId.DMMP0002, "Invalid entity tag", DiagnosticCategory.Design, entity.Location, DiagnosticSeverity.Error,
-                        $"This entity tag ({tag}) is not unique. Already used by entity: {otherEntity.Name}");
+                        $"Entity tag ({tag}) is already used by entity: {otherEntity.Name}");
                 }
-                else
-                {
-                    map[tag] = entity;
-                }
+
+                map[tag] = entity;
             }
             return null;
         }
