@@ -12,8 +12,8 @@ namespace DTOMaker.MemBlocks
         {
             SyntaxReceiverHelper.ProcessNode(context, Domains,
                 (n, l) => new MemBlockDomain(n, l),
-                (n, l) => new MemBlockEntity(n, l),
-                (n, l) => new MemBlockMember(n, l));
+                (d, n, l) => new MemBlockEntity(d, n, l),
+                (e, n, l) => new MemBlockMember(e, n, l));
         }
     }
 }

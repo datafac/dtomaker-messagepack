@@ -177,14 +177,13 @@ namespace DTOMaker.MemBlocks
             // check that the users compilation references the expected libraries
             //CheckReferencedAssemblyNamesInclude(context, typeof(DTOMaker.Runtime.IFieldCodec).Assembly);
 
-            Version fv = new Version(ThisAssembly.AssemblyFileVersion);
-            string shortVersion = $"{fv.Major}.{fv.Minor}";
+            var assembly = Assembly.GetExecutingAssembly();
+            var language = Language_CSharp.Instance;
 
             foreach (var domain in syntaxReceiver.Domains.Values)
             {
                 EmitDiagnostics(context, domain);
-                var domainTokens = ImmutableDictionary<string, object?>.Empty
-                    .Add("DomainName", domain.Name);
+                var domainScope = new ModelScope_Domain(language, domain);
                 foreach (var entity in domain.Entities.Values.OrderBy(e => e.Name))
                 {
                     // do any auto-layout if required
@@ -201,8 +200,7 @@ namespace DTOMaker.MemBlocks
                     var builder = new StringBuilder();
                     var template = GetTemplate("DTOMaker.MemBlocks.EntityTemplate.cs");
                     var processor = new TemplateProcessor();
-                    var language = Language_CSharp.Instance;
-                    var outerScope = new ModelScope_Entity(language, entity, domainTokens);
+                    var outerScope = new ModelScope_Entity(domainScope, language, entity);
                     foreach (string line in processor.ProcessTemplate(template, language, outerScope))
                     {
                         builder.AppendLine(line);

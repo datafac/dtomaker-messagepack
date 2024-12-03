@@ -5,6 +5,6 @@ namespace DTOMaker.MessagePack
 {
     internal sealed class MessagePackEntity : TargetEntity
     {
-        public MessagePackEntity(string name, Location location) : base(name, location) { }
+        public MessagePackEntity(TargetDomain domain, string name, Location location) : base(domain, name, location) { }
     }
 }

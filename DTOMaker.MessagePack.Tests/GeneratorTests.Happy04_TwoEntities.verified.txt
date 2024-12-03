@@ -15,7 +15,7 @@ namespace MyOrg.Models.MessagePack
     public partial class MyOtherDTO : EntityBase, IMyOtherDTO, IFreezable
     {
 
-        public const int EntityTag = 2;
+        public new const int EntityTag = 2;
         protected override void OnFreeze()
         {
             base.OnFreeze();

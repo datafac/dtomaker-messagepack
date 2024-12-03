@@ -12,8 +12,8 @@ namespace DTOMaker.MessagePack
         {
             SyntaxReceiverHelper.ProcessNode(context, Domains,
                 (n, l) => new MessagePackDomain(n, l),
-                (n, l) => new MessagePackEntity(n, l),
-                (n, l) => new MessagePackMember(n, l));
+                (d, n, l) => new MessagePackEntity(d, n, l),
+                (e, n, l) => new MessagePackMember(e, n, l));
         }
     }
 }

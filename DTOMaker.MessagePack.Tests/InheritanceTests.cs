@@ -12,7 +12,7 @@ namespace DTOMaker.MessagePack.Tests
     public class InheritanceTests
     {
         [Fact]
-        public async Task Common01_EntityBaseA()
+        public async Task Entity01_VerifyBase()
         {
             var inputSource =
                 """
@@ -41,7 +41,7 @@ namespace DTOMaker.MessagePack.Tests
         }
 
         [Fact]
-        public async Task Common02_EntityBaseB()
+        public async Task Entity02_VerifyCommon()
         {
             var inputSource =
                 """
@@ -74,7 +74,7 @@ namespace DTOMaker.MessagePack.Tests
         }
 
         [Fact]
-        public async Task Common03_EntityBaseC()
+        public async Task Entity03_VerifySpecific()
         {
             var inputSource =
                 """
@@ -88,6 +88,41 @@ namespace DTOMaker.MessagePack.Tests
                     [Entity(2)]
                     public interface IMyDTO : IMyBase
                     {
+                    }
+                }
+                """;
+
+            var generatorResult = GeneratorTestHelper.RunSourceGenerator(inputSource, LanguageVersion.LatestMajor);
+            generatorResult.Exception.Should().BeNull();
+            generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Should().BeEmpty();
+            generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Should().BeEmpty();
+            generatorResult.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Should().BeEmpty();
+            generatorResult.GeneratedSources.Length.Should().Be(3);
+            GeneratedSourceResult source = generatorResult.GeneratedSources[2];
+
+            // custom generation checks
+            source.HintName.Should().Be("MyOrg.Models.MyDTO.MessagePack.g.cs");
+            string outputCode = string.Join(Environment.NewLine, source.SourceText.Lines.Select(tl => tl.ToString()));
+            await Verifier.Verify(outputCode);
+        }
+
+        [Fact]
+        public async Task Member01_MemberTagsAreUniqueWithinTree()
+        {
+            var inputSource =
+                """
+                using DTOMaker.Models;
+                namespace MyOrg.Models
+                {
+                    [Entity(1)]
+                    public interface IMyBase
+                    {
+                        [Member(1)] double BaseField1 { get; set; }
+                    }
+                    [Entity(2)]
+                    public interface IMyDTO : IMyBase
+                    {
+                        [Member(1)] double DTOField1 { get; set; }
                     }
                 }
                 """;

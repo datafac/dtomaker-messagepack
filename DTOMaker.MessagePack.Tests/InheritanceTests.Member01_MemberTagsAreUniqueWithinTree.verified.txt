@@ -15,7 +15,7 @@ namespace MyOrg.Models.MessagePack
     public partial class MyDTO : MyBase, IMyDTO, IFreezable
     {
 
-        public const int EntityTag = 2;
+        public new const int EntityTag = 2;
         protected override void OnFreeze()
         {
             base.OnFreeze();
@@ -27,6 +27,16 @@ namespace MyOrg.Models.MessagePack
         public MyDTO() { }
         public MyDTO(IMyDTO source, bool frozen = false) : base(source, frozen)
         {
+            _DTOField1 = source.DTOField1;
+        }
+
+        [IgnoreMember]
+        private Double _DTOField1;
+        [Key(1)]
+        public Double DTOField1
+        {
+            get => _DTOField1;
+            set => _DTOField1 = IfNotFrozen(ref value);
         }
 
 
@@ -35,6 +45,7 @@ namespace MyOrg.Models.MessagePack
             if (ReferenceEquals(this, other)) return true;
             if (other is null) return false;
             if (!base.Equals(other)) return false;
+            if (!_DTOField1.Equals(other.DTOField1)) return false;
             return true;
         }
 
@@ -47,6 +58,7 @@ namespace MyOrg.Models.MessagePack
         {
             HashCode result = new HashCode();
             // todo result.Add(base.GetHashCode());
+            result.Add(_DTOField1);
             return result.ToHashCode();
         }
 

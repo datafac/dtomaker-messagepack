@@ -2,20 +2,17 @@
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace DTOMaker.CSPoco
 {
     [Generator(LanguageNames.CSharp)]
-    public class CSPocoSourceGenerator : ISourceGenerator
+    public class CSPocoSourceGenerator : SourceGeneratorBase
     {
-        public void Initialize(GeneratorInitializationContext context)
+        protected override void OnInitialize(GeneratorInitializationContext context)
         {
-            context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
+            context.RegisterForSyntaxNotifications(() => new CSPocoSyntaxReceiver());
         }
 
         private void EmitDiagnostics(GeneratorExecutionContext context, TargetBase target)
@@ -58,38 +55,27 @@ namespace DTOMaker.CSPoco
             }
         }
 
-        private string GenerateSourceText(ILanguage language, IModelScope outerScope, string templateName)
+        protected override void OnExecute(GeneratorExecutionContext context)
         {
-            var template = Assembly.GetExecutingAssembly().GetTemplate(templateName);
-            var processor = new TemplateProcessor();
-            var builder = new StringBuilder();
-            foreach (string line in processor.ProcessTemplate(template, language, outerScope))
-            {
-                builder.AppendLine(line);
-            }
-            return builder.ToString();
-        }
-
-        public void Execute(GeneratorExecutionContext context)
-        {
-            if (context.SyntaxContextReceiver is not SyntaxReceiver syntaxReceiver) return;
+            if (context.SyntaxContextReceiver is not CSPocoSyntaxReceiver syntaxReceiver) return;
 
             //// check that the users compilation references the expected libraries
             //CheckReferencedAssemblyNamesInclude(context, typeof(DTOMaker.Models.DomainAttribute).Assembly);
 
-            Version fv = new Version(ThisAssembly.AssemblyFileVersion);
-            string shortVersion = $"{fv.Major}.{fv.Minor}";
+            //Version fv = new Version(ThisAssembly.AssemblyFileVersion);
+            //string shortVersion = $"{fv.Major}.{fv.Minor}";
             var language = Language_CSharp.Instance;
+            var assembly = Assembly.GetExecutingAssembly();
 
             foreach (var domain in syntaxReceiver.Domains.Values)
             {
                 EmitDiagnostics(context, domain);
 
-                var domainScope = new ModelScope_Domain(language, domain, Array.Empty<KeyValuePair<string, object?>>());
+                var domainScope = new ModelScope_Domain(language, domain);
 
                 // emit entity base
                 {
-                    string sourceText = GenerateSourceText(language, domainScope, "DTOMaker.CSPoco.DomainTemplate.cs");
+                    string sourceText = GenerateSourceText(language, domainScope, assembly, "DTOMaker.CSPoco.DomainTemplate.cs");
                     context.AddSource(
                         $"{domain.Name}.EntityBase.CSPoco.g.cs",
                         sourceText);
@@ -104,8 +90,8 @@ namespace DTOMaker.CSPoco
                         EmitDiagnostics(context, member);
                     }
 
-                    var entityScope = new ModelScope_Entity(language, entity, domainScope.Variables);
-                    string sourceText = GenerateSourceText(language, entityScope, "DTOMaker.CSPoco.EntityTemplate.cs");
+                    var entityScope = new ModelScope_Entity(domainScope, language, entity);
+                    string sourceText = GenerateSourceText(language, entityScope, assembly, "DTOMaker.CSPoco.EntityTemplate.cs");
                     context.AddSource(
                         $"{domain.Name}.{entity.Name}.CSPoco.g.cs",
                         sourceText);

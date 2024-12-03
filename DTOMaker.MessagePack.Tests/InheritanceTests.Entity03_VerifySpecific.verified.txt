@@ -12,10 +12,10 @@ using System;
 namespace MyOrg.Models.MessagePack
 {
     [MessagePackObject]
-    public partial class MyDTO : EntityBase, IMyDTO, IFreezable
+    public partial class MyDTO : MyBase, IMyDTO, IFreezable
     {
 
-        public new const int EntityTag = 1;
+        public new const int EntityTag = 2;
         protected override void OnFreeze()
         {
             base.OnFreeze();
@@ -27,16 +27,6 @@ namespace MyOrg.Models.MessagePack
         public MyDTO() { }
         public MyDTO(IMyDTO source, bool frozen = false) : base(source, frozen)
         {
-            _Field1 = source.Field1;
-        }
-
-        [IgnoreMember]
-        private String _Field1;
-        [Key(1)]
-        public String Field1
-        {
-            get => _Field1;
-            set => _Field1 = IfNotFrozen(ref value);
         }
 
 
@@ -45,7 +35,6 @@ namespace MyOrg.Models.MessagePack
             if (ReferenceEquals(this, other)) return true;
             if (other is null) return false;
             if (!base.Equals(other)) return false;
-            if (!_Field1.Equals(other.Field1)) return false;
             return true;
         }
 
@@ -58,7 +47,6 @@ namespace MyOrg.Models.MessagePack
         {
             HashCode result = new HashCode();
             // todo result.Add(base.GetHashCode());
-            result.Add(_Field1);
             return result.ToHashCode();
         }
 

@@ -15,7 +15,7 @@ namespace MyOrg.Models.MessagePack
     public partial class MyBase : EntityBase, IMyBase, IFreezable
     {
 
-        public const int EntityTag = 1;
+        public new const int EntityTag = 1;
         protected override void OnFreeze()
         {
             base.OnFreeze();

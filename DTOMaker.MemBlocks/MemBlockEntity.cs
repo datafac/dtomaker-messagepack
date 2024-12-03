@@ -7,7 +7,7 @@ namespace DTOMaker.MemBlocks
 {
     internal sealed class MemBlockEntity : TargetEntity
     {
-        public MemBlockEntity(string name, Location location) : base(name, location) { }
+        public MemBlockEntity(TargetDomain domain, string name, Location location) : base(domain, name, location) { }
 
         private SyntaxDiagnostic? CheckHasEntityLayoutAttribute()
         {

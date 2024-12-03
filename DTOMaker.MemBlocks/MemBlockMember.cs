@@ -6,11 +6,9 @@ namespace DTOMaker.MemBlocks
 {
     internal sealed class MemBlockMember : TargetMember
     {
-        public MemBlockMember(string name, Location location) : base(name, location)
-        {
-        }
+        public MemBlockMember(TargetEntity entity, string name, Location location) : base(entity, name, location) { }
 
-        public LayoutMethod LayoutMethod => Parent?.LayoutMethod ?? LayoutMethod.Undefined;
+        public LayoutMethod LayoutMethod => Entity?.LayoutMethod ?? LayoutMethod.Undefined;
 
         private SyntaxDiagnostic? CheckMemberType()
         {

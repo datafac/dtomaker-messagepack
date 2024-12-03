@@ -77,15 +77,15 @@ namespace DTOMaker.MessagePack
             //// check that the users compilation references the expected libraries
             //CheckReferencedAssemblyNamesInclude(context, typeof(Models.DomainAttribute).Assembly);
 
-            Version fv = new Version(ThisAssembly.AssemblyFileVersion);
-            string shortVersion = $"{fv.Major}.{fv.Minor}";
+            //Version fv = new Version(ThisAssembly.AssemblyFileVersion);
+            //string shortVersion = $"{fv.Major}.{fv.Minor}";
             var language = Language_CSharp.Instance;
 
             foreach (var domain in syntaxReceiver.Domains.Values)
             {
                 EmitDiagnostics(context, domain);
 
-                var domainScope = new ModelScope_Domain(language, domain, Array.Empty<KeyValuePair<string, object?>>());
+                var domainScope = new ModelScope_Domain(language, domain);
 
                 // emit entity base
                 {
@@ -104,7 +104,7 @@ namespace DTOMaker.MessagePack
                         EmitDiagnostics(context, member);
                     }
 
-                    var entityScope = new ModelScope_Entity(language, entity, domainScope.Variables);
+                    var entityScope = new ModelScope_Entity(domainScope, language, entity);
                     string sourceText = GenerateSourceText(language, entityScope, "DTOMaker.MessagePack.EntityTemplate.cs");
                     context.AddSource(
                         $"{domain.Name}.{entity.Name}.MessagePack.g.cs",
