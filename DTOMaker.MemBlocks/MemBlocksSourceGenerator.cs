@@ -2,7 +2,6 @@
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -15,7 +14,7 @@ namespace DTOMaker.MemBlocks
     {
         public void Initialize(GeneratorInitializationContext context)
         {
-            context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
+            context.RegisterForSyntaxNotifications(() => new MemBlocksSyntaxReceiver());
         }
 
         private void EmitDiagnostics(GeneratorExecutionContext context, TargetBase target)
@@ -86,7 +85,7 @@ namespace DTOMaker.MemBlocks
             }
         }
 
-        private static void AutoLayoutMembers(TargetEntity entity)
+        private static void AutoLayoutMembers(MemBlockEntity entity)
         {
             switch (entity.LayoutMethod)
             {
@@ -172,19 +171,17 @@ namespace DTOMaker.MemBlocks
 
         public void Execute(GeneratorExecutionContext context)
         {
-            if (context.SyntaxContextReceiver is not SyntaxReceiver syntaxReceiver) return;
-
-            // check that the users compilation references the expected libraries
-            //CheckReferencedAssemblyNamesInclude(context, typeof(DTOMaker.Runtime.IFieldCodec).Assembly);
+            if (context.SyntaxContextReceiver is not MemBlocksSyntaxReceiver syntaxReceiver) return;
 
             var assembly = Assembly.GetExecutingAssembly();
             var language = Language_CSharp.Instance;
+            var factory = new MemBlocksScopeFactory();
 
             foreach (var domain in syntaxReceiver.Domains.Values)
             {
                 EmitDiagnostics(context, domain);
-                var domainScope = new ModelScope_Domain(language, domain);
-                foreach (var entity in domain.Entities.Values.OrderBy(e => e.Name))
+                var domainScope = new MemBlocksModelScopeDomain(ModelScopeEmpty.Instance, factory, language, domain);
+                foreach (var entity in domain.Entities.Values.OrderBy(e => e.Name).OfType<MemBlockEntity>())
                 {
                     // do any auto-layout if required
                     AutoLayoutMembers(entity);
@@ -200,7 +197,7 @@ namespace DTOMaker.MemBlocks
                     var builder = new StringBuilder();
                     var template = GetTemplate("DTOMaker.MemBlocks.EntityTemplate.cs");
                     var processor = new TemplateProcessor();
-                    var outerScope = new ModelScope_Entity(domainScope, language, entity);
+                    var outerScope = new MemBlocksModelScopeEntity(domainScope, factory, language, entity);
                     foreach (string line in processor.ProcessTemplate(template, language, outerScope))
                     {
                         builder.AppendLine(line);

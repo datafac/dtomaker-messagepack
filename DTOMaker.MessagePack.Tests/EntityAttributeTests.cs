@@ -17,9 +17,10 @@ namespace DTOMaker.MessagePack.Tests
             var inputSource =
                 """
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyDTO
                     {
                     }

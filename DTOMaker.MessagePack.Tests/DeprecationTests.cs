@@ -18,9 +18,10 @@ namespace DTOMaker.MessagePack.Tests
                 """
                 using System;
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyDTO
                     {
                         [Obsolete]
@@ -50,9 +51,10 @@ namespace DTOMaker.MessagePack.Tests
                 """
                 using System;
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyDTO
                     {
                         [Obsolete("Removed")]
@@ -82,9 +84,10 @@ namespace DTOMaker.MessagePack.Tests
                 """
                 using System;
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyDTO
                     {
                         [Obsolete("Removed", true)]

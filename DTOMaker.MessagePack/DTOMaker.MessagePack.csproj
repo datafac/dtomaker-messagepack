@@ -35,7 +35,7 @@
 		<!-- Package the generator in the analyzer directory of the nuget package -->
 		<None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		<!-- Private dependencies of this generator that consumers of this generator will not reference. -->
-		<PackageReference Include="DTOMaker.Core" Version="0.40.3-dev" PrivateAssets="all" GeneratePathProperty="true" />
+		<PackageReference Include="DTOMaker.Core" Version="0.40.12-dev" PrivateAssets="all" GeneratePathProperty="true" />
 		<PackageReference Include="System.Memory" Version="4.6.0" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
 
@@ -64,8 +64,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.11.0" />
-		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.146">
+		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.12.0" />
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.7.112">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

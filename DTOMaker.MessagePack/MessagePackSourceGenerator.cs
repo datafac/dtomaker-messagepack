@@ -1,12 +1,7 @@
 ﻿using DTOMaker.Gentime;
 using Microsoft.CodeAnalysis;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace DTOMaker.MessagePack
 {
@@ -38,25 +33,6 @@ namespace DTOMaker.MessagePack
                             diagnostic.Category, diagnostic.Severity, true), diagnostic.Location));
             }
         }
-        private void CheckReferencedAssemblyNamesInclude(GeneratorExecutionContext context, Assembly assembly)
-        {
-            string packageName = assembly.GetName().Name;
-            Version packageVersion = assembly.GetName().Version;
-            if (!context.Compilation.ReferencedAssemblyNames.Any(ai => ai.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase)))
-            {
-                // todo major version error/minor version warning
-                // todo fix diag id, title and categ
-                context.ReportDiagnostic(Diagnostic.Create(
-                        new DiagnosticDescriptor(
-                            DiagnosticId.DMMP0001, 
-                            "Missing assembly reference",
-                            $"The generated code requires a reference to {packageName} (v{packageVersion} or later).",
-                            DiagnosticCategory.Other,
-                            DiagnosticSeverity.Warning,
-                            true),
-                            Location.None));
-            }
-        }
 
         protected override void OnExecute(GeneratorExecutionContext context)
         {
@@ -64,12 +40,13 @@ namespace DTOMaker.MessagePack
 
             var assembly = Assembly.GetExecutingAssembly();
             var language = Language_CSharp.Instance;
+            var factory = new MessagePackScopeFactory();
 
             foreach (var domain in syntaxReceiver.Domains.Values)
             {
                 EmitDiagnostics(context, domain);
 
-                var domainScope = new ModelScope_Domain(language, domain);
+                var domainScope = new MessagePackModelScopeDomain(ModelScopeEmpty.Instance, factory, language, domain);
 
                 // emit entity base
                 {
@@ -88,7 +65,7 @@ namespace DTOMaker.MessagePack
                         EmitDiagnostics(context, member);
                     }
 
-                    var entityScope = new ModelScope_Entity(domainScope, language, entity);
+                    var entityScope = factory.CreateEntity(domainScope, factory, language, entity);
                     string sourceText = GenerateSourceText(language, entityScope, assembly, "DTOMaker.MessagePack.EntityTemplate.cs");
                     context.AddSource(
                         $"{domain.Name}.{entity.Name}.MessagePack.g.cs",

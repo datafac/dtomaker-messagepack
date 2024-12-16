@@ -17,9 +17,10 @@ namespace DTOMaker.MessagePack.Tests
             var inputSource =
                 """
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyDTO
                     {
                     }
@@ -46,9 +47,10 @@ namespace DTOMaker.MessagePack.Tests
             var inputSource =
                 """
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyDTO
                     {
                         [Member(1)] double Field1 { get; set; }
@@ -76,9 +78,10 @@ namespace DTOMaker.MessagePack.Tests
             var inputSource =
                 """
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyDTO
                     {
                         [Member(1)] double Field1 { get; set; }
@@ -107,15 +110,16 @@ namespace DTOMaker.MessagePack.Tests
             var inputSource =
                 """
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyFirstDTO
                     {
                         [Member(1)] double Field1 { get; set; }
                     }
 
-                    [Entity(2)]
+                    [Entity][EntityTag(2)]
                     public interface IMyOtherDTO
                     {
                         [Member(1)] long Field1 { get; set; }
@@ -149,9 +153,10 @@ namespace DTOMaker.MessagePack.Tests
             var inputSource =
                 """
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyDTO
                     {
                         [Member(1)] ReadOnlyMemory<double> Field1 { get; set; }
@@ -179,9 +184,10 @@ namespace DTOMaker.MessagePack.Tests
             var inputSource =
                 """
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyDTO
                     {
                         [Member(1)] string Field1 { get; set; }
@@ -209,9 +215,10 @@ namespace DTOMaker.MessagePack.Tests
             var inputSource =
                 """
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
-                    [Entity(1)]
+                    [Entity][EntityTag(1)]
                     public interface IMyDTO
                     {
                         [Member(1)] string? Field1 { get; set; }
@@ -240,6 +247,7 @@ namespace DTOMaker.MessagePack.Tests
             var inputSource =
                 """
                 using DTOMaker.Models;
+                using DTOMaker.Models.MessagePack;
                 namespace MyOrg.Models
                 {
                     public interface IMyDTO

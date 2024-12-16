@@ -1,4 +1,5 @@
 ﻿using DTOMaker.Models;
+using DTOMaker.Models.MemBlocks;
 using System;
 using System.Text;
 namespace MyOrg.Models
