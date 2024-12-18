@@ -15,7 +15,7 @@ namespace MyOrg.Models.MemBlocks
 {
     public sealed partial class MyDTO : EntityBase, IMyDTO, IFreezable
     {
-        private const int BlockLength = 0;
+        private const int BlockLength = 256;
         private readonly Memory<byte> _writableBlock;
         private readonly ReadOnlyMemory<byte> _readonlyBlock;
 
@@ -29,6 +29,10 @@ namespace MyOrg.Models.MemBlocks
         // -------------------- field map -----------------------------
         //  Seq.  Off.  Len.  N.    Type    End.  Name
         //  ----  ----  ----  ----  ------- ----  -------
+        //     1     0    64        String  LE    FamilyName
+        //     2    64    64        String  LE    GivenNames
+        //     3   128    64        String  LE    OtherNames_Value
+        //     4   192     1        Boolean LE    OtherNames_HasValue
         // ------------------------------------------------------------
 
         public MyDTO()
@@ -45,6 +49,10 @@ namespace MyOrg.Models.MemBlocks
         public MyDTO(IMyDTO source, bool frozen = false) : base(source, frozen)
         {
             _readonlyBlock = _writableBlock = new byte[BlockLength];
+            this.FamilyName = source.FamilyName;
+            this.GivenNames = source.GivenNames;
+            this.OtherNames_Value = source.OtherNames_Value;
+            this.OtherNames_HasValue = source.OtherNames_HasValue;
         }
 
         public MyDTO(ImmutableArray<ReadOnlyMemory<byte>> buffers) : base(buffers.Slice(0, buffers.Length - 1))
@@ -62,6 +70,62 @@ namespace MyOrg.Models.MemBlocks
                 _readonlyBlock = memory;
             }
             _writableBlock = Memory<byte>.Empty;
+        }
+
+        public String FamilyName
+        {
+            get
+            {
+                return (String)Codec_String_LE.ReadFromSpan(_readonlyBlock.Slice(0, 64).Span);
+            }
+
+            set
+            {
+                ThrowExceptionIfFrozen();
+                Codec_String_LE.WriteToSpan(_writableBlock.Slice(0, 64).Span, value);
+            }
+        }
+
+        public String GivenNames
+        {
+            get
+            {
+                return (String)Codec_String_LE.ReadFromSpan(_readonlyBlock.Slice(64, 64).Span);
+            }
+
+            set
+            {
+                ThrowExceptionIfFrozen();
+                Codec_String_LE.WriteToSpan(_writableBlock.Slice(64, 64).Span, value);
+            }
+        }
+
+        public String OtherNames_Value
+        {
+            get
+            {
+                return (String)Codec_String_LE.ReadFromSpan(_readonlyBlock.Slice(128, 64).Span);
+            }
+
+            set
+            {
+                ThrowExceptionIfFrozen();
+                Codec_String_LE.WriteToSpan(_writableBlock.Slice(128, 64).Span, value);
+            }
+        }
+
+        public Boolean OtherNames_HasValue
+        {
+            get
+            {
+                return (Boolean)Codec_Boolean_LE.ReadFromSpan(_readonlyBlock.Slice(192, 1).Span);
+            }
+
+            set
+            {
+                ThrowExceptionIfFrozen();
+                Codec_Boolean_LE.WriteToSpan(_writableBlock.Slice(192, 1).Span, value);
+            }
         }
 
     }
