@@ -20,7 +20,7 @@ namespace MyOrg.Models
 
         // fixed byte arary
         [Member(3)]
-        [MemberLayout(arrayLength: 64)]
+        [Length(64)]
         ReadOnlyMemory<byte> Field3_Values { get; set; }
 
         [Member(4)]
