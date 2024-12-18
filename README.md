@@ -1,6 +1,7 @@
 # DTOMaker
 
-Source generators for various kinds of DTOs and POCOs.
+Source generators for various kinds of DTOs (Data Transport Objects) and
+POCOs (Plain Old C# Objects).
 
 [![Build-Deploy](https://github.com/datafac/dtomaker/actions/workflows/dotnet.yml/badge.svg)](https://github.com/datafac/dtomaker/actions/workflows/dotnet.yml)
 
