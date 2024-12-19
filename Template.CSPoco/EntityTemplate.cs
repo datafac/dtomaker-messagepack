@@ -36,6 +36,8 @@ namespace T_DomainName_.CSPoco
             if (!base.Equals(other)) return false;
             return true;
         }
+        public override bool Equals(object? obj) => obj is T_BaseName_ other && Equals(other);
+        public override int GetHashCode() => base.GetHashCode();
     }
     //##endif
     public partial class T_EntityName_ : T_BaseName_, IT_EntityName_, IEquatable<T_EntityName_>
@@ -59,7 +61,7 @@ namespace T_DomainName_.CSPoco
         public T_EntityName_() { }
         public T_EntityName_(IT_EntityName_ source, bool frozen = false) : base(source, frozen)
         {
-            // todo freezable members
+            // todo entity members
             //##foreach Members
             //##if MemberIsArray
             _T_VectorMemberName_ = source.T_VectorMemberName_;
@@ -138,7 +140,7 @@ namespace T_DomainName_.CSPoco
         private int CalcHashCode()
         {
             HashCode result = new HashCode();
-            // todo result.Add(base.GetHashCode());
+            result.Add(base.GetHashCode());
             //##foreach Members
             //##if MemberIsArray
             result.Add(_T_VectorMemberName_.Length);
@@ -161,7 +163,7 @@ namespace T_DomainName_.CSPoco
         public override int GetHashCode()
         {
             if (_hashCode.HasValue) return _hashCode.Value;
-            if (!this.IsFrozen()) return CalcHashCode();
+            if (!IsFrozen) return CalcHashCode();
             _hashCode = CalcHashCode();
             return _hashCode.Value;
         }

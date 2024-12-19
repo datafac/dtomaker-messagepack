@@ -18,7 +18,7 @@ namespace T_DomainName_.CSPoco
             _frozen = frozen;
         }
         private volatile bool _frozen;
-        public bool IsFrozen() => _frozen;
+        public bool IsFrozen => _frozen;
         protected virtual void OnFreeze() { }
         public void Freeze()
         {
@@ -40,5 +40,7 @@ namespace T_DomainName_.CSPoco
         }
 
         public bool Equals(EntityBase? other) => true;
+        public override bool Equals(object? obj) => obj is EntityBase;
+        public override int GetHashCode() => 0;
     }
 }

@@ -24,7 +24,8 @@ namespace T_DomainName_.MessagePack
         }
         [IgnoreMember]
         private volatile bool _frozen;
-        public bool IsFrozen() => _frozen;
+        [IgnoreMember]
+        public bool IsFrozen => _frozen;
         protected virtual void OnFreeze() { }
         public void Freeze()
         {
@@ -46,5 +47,7 @@ namespace T_DomainName_.MessagePack
         }
 
         public bool Equals(EntityBase? other) => true;
+        public override bool Equals(object obj) => obj is EntityBase;
+        public override int GetHashCode() => 0;
     }
 }

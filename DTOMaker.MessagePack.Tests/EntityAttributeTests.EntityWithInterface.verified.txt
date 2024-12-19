@@ -46,7 +46,7 @@ namespace MyOrg.Models.MessagePack
         private int CalcHashCode()
         {
             HashCode result = new HashCode();
-            // todo result.Add(base.GetHashCode());
+            result.Add(base.GetHashCode());
             return result.ToHashCode();
         }
 
@@ -54,7 +54,7 @@ namespace MyOrg.Models.MessagePack
         public override int GetHashCode()
         {
             if (_hashCode.HasValue) return _hashCode.Value;
-            if (!this.IsFrozen()) return CalcHashCode();
+            if (!IsFrozen) return CalcHashCode();
             _hashCode = CalcHashCode();
             return _hashCode.Value;
         }

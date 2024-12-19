@@ -24,7 +24,7 @@ namespace MyOrg.Models.CSPoco
         public MyBase() { }
         public MyBase(IMyBase source, bool frozen = false) : base(source, frozen)
         {
-            // todo freezable members
+            // todo entity members
         }
 
 
@@ -44,7 +44,7 @@ namespace MyOrg.Models.CSPoco
         private int CalcHashCode()
         {
             HashCode result = new HashCode();
-            // todo result.Add(base.GetHashCode());
+            result.Add(base.GetHashCode());
             return result.ToHashCode();
         }
 
@@ -52,7 +52,7 @@ namespace MyOrg.Models.CSPoco
         public override int GetHashCode()
         {
             if (_hashCode.HasValue) return _hashCode.Value;
-            if (!this.IsFrozen()) return CalcHashCode();
+            if (!IsFrozen) return CalcHashCode();
             _hashCode = CalcHashCode();
             return _hashCode.Value;
         }
