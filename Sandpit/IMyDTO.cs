@@ -11,7 +11,7 @@ namespace MyOrg.Models
         MaxKind = ushort.MaxValue,
     }
     [Entity]
-    [EntityLayout(LayoutMethod.SequentialV1)]
+    [EntityLayout("MyDTO", LayoutMethod.SequentialV1)]
     public interface IMyDTO
     {
         [Member(1)] double Field2_Value { get; set; }
