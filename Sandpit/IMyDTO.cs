@@ -1,7 +1,6 @@
 ﻿using DTOMaker.Models;
 using DTOMaker.Models.MemBlocks;
 using System;
-using System.Text;
 namespace MyOrg.Models
 {
     public enum Kind16 : ushort
@@ -11,7 +10,7 @@ namespace MyOrg.Models
         MaxKind = ushort.MaxValue,
     }
     [Entity]
-    [EntityLayout("MyDTO", LayoutMethod.SequentialV1)]
+    [Id("MyDTO")][Layout(LayoutMethod.SequentialV1)]
     public interface IMyDTO
     {
         [Member(1)] double Field2_Value { get; set; }
