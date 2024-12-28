@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 
 namespace MyOrg.Models.MessagePack
 {
-    [MessagePackObject]
+    [MessagePackObject(AllowPrivate = true)]
     public partial class MyDTO : IMyDTO, IFreezable
     {
         // todo move to base
