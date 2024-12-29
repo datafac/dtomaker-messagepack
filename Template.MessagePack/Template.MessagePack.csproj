@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="DataFac.Runtime" Version="0.2.3" />
+		<PackageReference Include="DTOMaker.Runtime.MessagePack" Version="0.49.4-dev" />
 		<PackageReference Include="MessagePack" Version="2.5.192" />
 	</ItemGroup>
 

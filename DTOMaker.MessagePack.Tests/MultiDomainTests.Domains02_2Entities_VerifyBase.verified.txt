@@ -9,7 +9,7 @@ using MessagePack;
 using System;
 using System.Runtime.CompilerServices;
 
-namespace DTOMaker.Common.MessagePack
+namespace DTOMaker.Runtime.MessagePack
 {
     [MessagePackObject]
     [Union(MyOrg.DomainA.MessagePack.MyDTO.EntityKey, typeof(MyOrg.DomainA.MessagePack.MyDTO))]
