@@ -8,7 +8,7 @@
 //##endif
 #pragma warning disable CS0414
 #nullable enable
-using DataFac.Runtime;
+using DTOMaker.Runtime;
 using DTOMaker.Runtime.CSPoco;
 using System;
 

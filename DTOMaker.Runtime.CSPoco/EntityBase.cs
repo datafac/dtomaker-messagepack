@@ -1,5 +1,4 @@
-﻿using DataFac.Runtime;
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 
 namespace DTOMaker.Runtime.CSPoco

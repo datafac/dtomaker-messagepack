@@ -1,5 +1,4 @@
-﻿using DataFac.Runtime;
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 
 namespace DTOMaker.Runtime.MemBlocks
@@ -59,6 +58,6 @@ namespace DTOMaker.Runtime.MemBlocks
 
         public bool Equals(EntityBase? other) => true;
         public override bool Equals(object? obj) => obj is EntityBase;
-        public override int GetHashCode() => 0;
+        public override int GetHashCode() => HashCode.Combine<Type>(typeof(EntityBase));
     }
 }

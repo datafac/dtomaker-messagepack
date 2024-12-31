@@ -9,7 +9,6 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DataFac.Memory;
-using DataFac.Runtime;
 using DTOMaker.Runtime.MemBlocks;
 //##if false
 using T_MemberType_ = System.Int32;
