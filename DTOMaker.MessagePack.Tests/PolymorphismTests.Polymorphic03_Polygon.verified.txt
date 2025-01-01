@@ -18,7 +18,7 @@ namespace MyOrg.Models.MessagePack
     [Union(RightTriangle.EntityKey, typeof(RightTriangle))]
     [Union(Square.EntityKey, typeof(Square))]
     public abstract partial class Polygon { }
-    public partial class Polygon : DTOMaker.Runtime.EntityBase, IPolygon, IEquatable<Polygon>
+    public partial class Polygon : DTOMaker.Runtime.MessagePack.EntityBase, IPolygon, IEquatable<Polygon>
     {
         // Derived entities: 6
         // - Equilateral

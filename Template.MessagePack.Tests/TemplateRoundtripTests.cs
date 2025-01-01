@@ -30,7 +30,7 @@ namespace Template_MessagePack.Tests
         }
 
         [Fact]
-        public void Roundtrip03AsParent()
+        public void Roundtrip03AsBase()
         {
             var orig = new T_EntityName_();
             orig.BaseField1 = 321;
@@ -38,8 +38,8 @@ namespace Template_MessagePack.Tests
             orig.T_VectorMemberName_ = new int[] { 1, 2, 3 };
             orig.Freeze();
 
-            ReadOnlyMemory<byte> buffer = MessagePackSerializer.Serialize<T_BaseName_>(orig);
-            var recd = MessagePackSerializer.Deserialize<T_BaseName_>(buffer, out int bytesRead);
+            ReadOnlyMemory<byte> buffer = MessagePackSerializer.Serialize<T_BaseNameSpace_.MessagePack.T_BaseName_>(orig);
+            var recd = MessagePackSerializer.Deserialize<T_BaseNameSpace_.MessagePack.T_BaseName_>(buffer, out int bytesRead);
             bytesRead.Should().Be(buffer.Length);
             recd.Should().NotBeNull();
             recd.Should().BeOfType<T_EntityName_>();

@@ -10,23 +10,13 @@ using DTOMaker.Runtime.MessagePack;
 using MessagePack;
 using System;
 
-namespace T_NameSpace_.MessagePack
+//##if false
+namespace T_BaseNameSpace_.MessagePack
 {
-    //##if false
     using T_MemberType_ = System.Int32;
-    using T_BaseFullName_ = T_BaseName_;
     public interface IT_BaseName_ { }
-    public interface IT_EntityName_ : IT_BaseName_
-    {
-        //##if MemberIsNullable
-        T_MemberType_? T_ScalarNullableMemberName_ { get; set; }
-        //##else
-        T_MemberType_ T_ScalarRequiredMemberName_ { get; set; }
-        //##endif
-        ReadOnlyMemory<T_MemberType_> T_VectorMemberName_ { get; set; }
-    }
     [MessagePackObject]
-    [Union(T_EntityName_.EntityKey, typeof(T_EntityName_))]
+    [Union(T_NameSpace_.MessagePack.T_EntityName_.EntityKey, typeof(T_NameSpace_.MessagePack.T_EntityName_))]
     public abstract class T_BaseName_ : EntityBase, IT_BaseName_, IEquatable<T_BaseName_>
     {
         public new const int EntityKey = 1;
@@ -49,6 +39,21 @@ namespace T_NameSpace_.MessagePack
         public override bool Equals(object? obj) => obj is T_BaseName_ other && Equals(other);
         public override int GetHashCode() => base.GetHashCode();
     }
+}
+//##endif
+namespace T_NameSpace_.MessagePack
+{
+    //##if false
+    using T_MemberType_ = System.Int32;
+    public interface IT_EntityName_ : T_BaseNameSpace_.MessagePack.IT_BaseName_
+    {
+        //##if MemberIsNullable
+        T_MemberType_? T_ScalarNullableMemberName_ { get; set; }
+        //##else
+        T_MemberType_ T_ScalarRequiredMemberName_ { get; set; }
+        //##endif
+        ReadOnlyMemory<T_MemberType_> T_VectorMemberName_ { get; set; }
+    }
     //##endif
     [MessagePackObject]
     //##foreach DerivedEntities
@@ -59,7 +64,7 @@ namespace T_NameSpace_.MessagePack
     //##if DerivedEntityCount > 0
     public abstract partial class T_EntityName2_ { }
     //##endif
-    public partial class T_EntityName_ : T_BaseFullName_, IT_EntityName_, IEquatable<T_EntityName_>
+    public partial class T_EntityName_ : T_BaseNameSpace_.MessagePack.T_BaseName_, IT_EntityName_, IEquatable<T_EntityName_>
     {
         // Derived entities: T_DerivedEntityCount_
         //##foreach DerivedEntities

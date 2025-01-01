@@ -13,7 +13,7 @@ using System;
 namespace MyOrg.Models.MessagePack
 {
     [MessagePackObject]
-    public partial class Equilateral : MyOrg.Models.Triangle, IEquilateral, IEquatable<Equilateral>
+    public partial class Equilateral : MyOrg.Models.MessagePack.Triangle, IEquilateral, IEquatable<Equilateral>
     {
         // Derived entities: 0
 
