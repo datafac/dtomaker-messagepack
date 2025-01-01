@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DTOMaker.Models" Version="0.53.3" />
+    <PackageReference Include="DTOMaker.Models.MessagePack" Version="0.53.3" />
+  </ItemGroup>
+
+</Project>

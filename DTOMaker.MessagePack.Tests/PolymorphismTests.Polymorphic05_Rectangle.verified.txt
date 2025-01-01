@@ -13,7 +13,7 @@ using System;
 namespace MyOrg.Models.MessagePack
 {
     [MessagePackObject]
-    public partial class Rectangle : Quadrilateral, IRectangle, IEquatable<Rectangle>
+    public partial class Rectangle : MyOrg.Models.Quadrilateral, IRectangle, IEquatable<Rectangle>
     {
         // Derived entities: 0
 

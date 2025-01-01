@@ -16,7 +16,7 @@ namespace MyOrg.Models.MessagePack
     [Union(Equilateral.EntityKey, typeof(Equilateral))]
     [Union(RightTriangle.EntityKey, typeof(RightTriangle))]
     public abstract partial class Triangle { }
-    public partial class Triangle : Polygon, ITriangle, IEquatable<Triangle>
+    public partial class Triangle : MyOrg.Models.Polygon, ITriangle, IEquatable<Triangle>
     {
         // Derived entities: 2
         // - Equilateral

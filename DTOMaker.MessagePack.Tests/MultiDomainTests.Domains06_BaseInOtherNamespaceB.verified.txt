@@ -10,14 +10,14 @@ using DTOMaker.Runtime.MessagePack;
 using MessagePack;
 using System;
 
-namespace MyOrg.DomainA.MessagePack
+namespace MyOrg.DomainB.MessagePack
 {
     [MessagePackObject]
-    public partial class MyDTO : DTOMaker.Runtime.EntityBase, IMyDTO, IEquatable<MyDTO>
+    public partial class MyDTO : MyOrg.DomainA.MyBase, IMyDTO, IEquatable<MyDTO>
     {
         // Derived entities: 0
 
-        public new const int EntityKey = 1;
+        public new const int EntityKey = 2;
 
         public new static MyDTO Create(int entityKey, ReadOnlyMemory<byte> buffer)
         {

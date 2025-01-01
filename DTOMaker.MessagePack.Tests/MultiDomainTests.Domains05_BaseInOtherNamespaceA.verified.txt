@@ -13,16 +13,20 @@ using System;
 namespace MyOrg.DomainA.MessagePack
 {
     [MessagePackObject]
-    public partial class MyDTO : DTOMaker.Runtime.EntityBase, IMyDTO, IEquatable<MyDTO>
+    [Union(MyDTO.EntityKey, typeof(MyDTO))]
+    public abstract partial class MyBase { }
+    public partial class MyBase : DTOMaker.Runtime.EntityBase, IMyBase, IEquatable<MyBase>
     {
-        // Derived entities: 0
+        // Derived entities: 1
+        // - MyDTO
 
         public new const int EntityKey = 1;
 
-        public new static MyDTO Create(int entityKey, ReadOnlyMemory<byte> buffer)
+        public new static MyBase Create(int entityKey, ReadOnlyMemory<byte> buffer)
         {
             return entityKey switch
             {
+                MyOrg.DomainB.MessagePack.MyDTO.EntityKey => MessagePackSerializer.Deserialize<MyOrg.DomainB.MessagePack.MyDTO>(buffer, out var _),
                 _ => throw new ArgumentOutOfRangeException(nameof(entityKey), entityKey, null)
             };
         }
@@ -33,15 +37,13 @@ namespace MyOrg.DomainA.MessagePack
             // todo freezable members
         }
 
-        protected override IFreezable OnPartCopy() => new MyDTO(this);
-
-        public MyDTO() { }
-        public MyDTO(IMyDTO source, bool frozen = false) : base(source, frozen)
+        public MyBase() { }
+        public MyBase(IMyBase source, bool frozen = false) : base(source, frozen)
         {
         }
 
 
-        public bool Equals(MyDTO? other)
+        public bool Equals(MyBase? other)
         {
             if (ReferenceEquals(this, other)) return true;
             if (other is null) return false;
@@ -49,9 +51,9 @@ namespace MyOrg.DomainA.MessagePack
             return true;
         }
 
-        public override bool Equals(object? obj) => obj is MyDTO other && Equals(other);
-        public static bool operator ==(MyDTO? left, MyDTO? right) => left is not null ? left.Equals(right) : (right is null);
-        public static bool operator !=(MyDTO? left, MyDTO? right) => left is not null ? !left.Equals(right) : (right is not null);
+        public override bool Equals(object? obj) => obj is MyBase other && Equals(other);
+        public static bool operator ==(MyBase? left, MyBase? right) => left is not null ? left.Equals(right) : (right is null);
+        public static bool operator !=(MyBase? left, MyBase? right) => left is not null ? !left.Equals(right) : (right is not null);
 
         private int CalcHashCode()
         {

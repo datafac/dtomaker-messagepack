@@ -14,6 +14,7 @@ namespace T_NameSpace_.MessagePack
 {
     //##if false
     using T_MemberType_ = System.Int32;
+    using T_BaseFullName_ = T_BaseName_;
     public interface IT_BaseName_ { }
     public interface IT_EntityName_ : IT_BaseName_
     {
@@ -58,7 +59,7 @@ namespace T_NameSpace_.MessagePack
     //##if DerivedEntityCount > 0
     public abstract partial class T_EntityName2_ { }
     //##endif
-    public partial class T_EntityName_ : T_BaseName_, IT_EntityName_, IEquatable<T_EntityName_>
+    public partial class T_EntityName_ : T_BaseFullName_, IT_EntityName_, IEquatable<T_EntityName_>
     {
         // Derived entities: T_DerivedEntityCount_
         //##foreach DerivedEntities

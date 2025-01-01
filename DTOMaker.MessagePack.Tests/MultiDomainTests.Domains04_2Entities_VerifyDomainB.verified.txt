@@ -13,7 +13,7 @@ using System;
 namespace MyOrg.DomainB.MessagePack
 {
     [MessagePackObject]
-    public partial class MyDTO : EntityBase, IMyDTO, IEquatable<MyDTO>
+    public partial class MyDTO : DTOMaker.Runtime.EntityBase, IMyDTO, IEquatable<MyDTO>
     {
         // Derived entities: 0
 
