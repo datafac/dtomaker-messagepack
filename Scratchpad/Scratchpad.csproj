@@ -5,8 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DTOMaker.Models" Version="0.53.3" />
-    <PackageReference Include="DTOMaker.Models.MessagePack" Version="0.53.3" />
+    <PackageReference Include="DTOMaker.Models" Version="0.54.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DTOMaker.Models.MessagePack\DTOMaker.Models.MessagePack.csproj" />
   </ItemGroup>
 
 </Project>
