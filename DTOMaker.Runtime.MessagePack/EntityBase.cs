@@ -10,10 +10,8 @@ namespace DTOMaker.Runtime.MessagePack
         public const int EntityKey = 0;
 
         public EntityBase() { }
-        public EntityBase(object? notUsed, bool frozen)
-        {
-            _frozen = frozen;
-        }
+        public EntityBase(object? notUsed) { }
+
         [IgnoreMember]
         private volatile bool _frozen;
         [IgnoreMember]
@@ -36,6 +34,12 @@ namespace DTOMaker.Runtime.MessagePack
         {
             if (_frozen) ThrowIsFrozenException(methodName);
             return ref value;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void ThrowIfFrozen([CallerMemberName] string? methodName = null)
+        {
+            if (_frozen) ThrowIsFrozenException(methodName);
         }
 
         public bool Equals(EntityBase? other) => true;

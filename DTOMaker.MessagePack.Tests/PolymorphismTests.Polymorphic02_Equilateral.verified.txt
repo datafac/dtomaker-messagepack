@@ -30,13 +30,12 @@ namespace MyOrg.Models.MessagePack
         protected override void OnFreeze()
         {
             base.OnFreeze();
-            // todo freezable members
         }
 
         protected override IFreezable OnPartCopy() => new Equilateral(this);
 
         public Equilateral() { }
-        public Equilateral(IEquilateral source, bool frozen = false) : base(source, frozen)
+        public Equilateral(IEquilateral source) : base(source)
         {
             _Length = source.Length;
         }

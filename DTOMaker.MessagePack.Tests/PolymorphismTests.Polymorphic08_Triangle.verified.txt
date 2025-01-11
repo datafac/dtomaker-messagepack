@@ -37,11 +37,10 @@ namespace MyOrg.Models.MessagePack
         protected override void OnFreeze()
         {
             base.OnFreeze();
-            // todo freezable members
         }
 
         public Triangle() { }
-        public Triangle(ITriangle source, bool frozen = false) : base(source, frozen)
+        public Triangle(ITriangle source) : base(source)
         {
         }
 

@@ -37,11 +37,10 @@ namespace MyOrg.Models.MessagePack
         protected override void OnFreeze()
         {
             base.OnFreeze();
-            // todo freezable members
         }
 
         public Quadrilateral() { }
-        public Quadrilateral(IQuadrilateral source, bool frozen = false) : base(source, frozen)
+        public Quadrilateral(IQuadrilateral source) : base(source)
         {
         }
 

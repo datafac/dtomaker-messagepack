@@ -11,6 +11,21 @@ using MessagePack;
 using System;
 
 //##if false
+namespace T_MemberTypeNameSpace_
+{
+    public interface IT_MemberTypeName_ { }
+}
+namespace T_MemberTypeNameSpace_.MessagePack
+{
+    public class T_MemberTypeName_ : EntityBase, IT_MemberTypeName_
+    {
+        private static readonly T_MemberTypeName_ _empty = new T_MemberTypeName_();
+        public static T_MemberTypeName_ Empty => _empty;
+        public T_MemberTypeName_() { }
+        public T_MemberTypeName_(IT_MemberTypeName_ source) { }
+        protected override IFreezable OnPartCopy() => throw new NotImplementedException();
+    }
+}
 namespace T_BaseNameSpace_.MessagePack
 {
     using T_MemberType_ = System.Int32;
@@ -22,7 +37,7 @@ namespace T_BaseNameSpace_.MessagePack
         public new const int EntityKey = 1;
 
         public T_BaseName_() { }
-        public T_BaseName_(IT_BaseName_ source, bool frozen = false) : base(source, frozen) { }
+        public T_BaseName_(IT_BaseName_ source) : base(source) { }
 
         protected override void OnFreeze() => base.OnFreeze();
         protected override IFreezable OnPartCopy() => throw new NotImplementedException();
@@ -53,6 +68,8 @@ namespace T_NameSpace_.MessagePack
         T_MemberType_ T_ScalarRequiredMemberName_ { get; set; }
         //##endif
         ReadOnlyMemory<T_MemberType_> T_VectorMemberName_ { get; set; }
+        T_MemberTypeNameSpace_.IT_MemberTypeName_? T_NullableEntityMemberName_ { get; set; }
+        T_MemberTypeNameSpace_.IT_MemberTypeName_ T_RequiredEntityMemberName_ { get; set; }
     }
     //##endif
     [MessagePackObject]
@@ -78,6 +95,8 @@ namespace T_NameSpace_.MessagePack
         private const int T_ScalarNullableMemberKey_ = T_MemberKeyOffset_ + 1;
         private const int T_ScalarRequiredMemberKey_ = T_MemberKeyOffset_ + 2;
         private const int T_VectorMemberKey_ = T_MemberKeyOffset_ + 3;
+        private const int T_NullableEntityMemberKey_ = T_MemberKeyOffset_ + 4;
+        private const int T_RequiredEntityMemberKey_ = T_MemberKeyOffset_ + 5;
         private const int T_MemberDefaultValue_ = 0;
         //##endif
 
@@ -99,7 +118,15 @@ namespace T_NameSpace_.MessagePack
         protected override void OnFreeze()
         {
             base.OnFreeze();
-            // todo freezable members
+            //##foreach Members
+            //##if MemberIsEntity
+            //##if MemberIsNullable
+            _T_NullableEntityMemberName_?.Freeze();
+            //##else
+            _T_RequiredEntityMemberName_.Freeze();
+            //##endif
+            //##endif
+            //##endfor
         }
 
         //##if DerivedEntityCount == 0
@@ -107,11 +134,17 @@ namespace T_NameSpace_.MessagePack
 
         //##endif
         public T_EntityName_() { }
-        public T_EntityName_(IT_EntityName_ source, bool frozen = false) : base(source, frozen)
+        public T_EntityName_(IT_EntityName_ source) : base(source)
         {
             //##foreach Members
-            //##if MemberIsArray
+            //##if MemberIsVector
             _T_VectorMemberName_ = source.T_VectorMemberName_;
+            //##elif MemberIsEntity
+            //##if MemberIsNullable
+            _T_NullableEntityMemberName_ = source.T_NullableEntityMemberName_ is null ? null : new T_MemberTypeNameSpace_.MessagePack.T_MemberTypeName_(source.T_NullableEntityMemberName_);
+            //##else
+            _T_RequiredEntityMemberName_ = new T_MemberTypeNameSpace_.MessagePack.T_MemberTypeName_(source.T_RequiredEntityMemberName_);
+            //##endif
             //##else
             //##if MemberIsNullable
             _T_ScalarNullableMemberName_ = source.T_ScalarNullableMemberName_;
@@ -123,7 +156,7 @@ namespace T_NameSpace_.MessagePack
         }
 
         //##foreach Members
-        //##if MemberIsArray
+        //##if MemberIsVector
         [IgnoreMember]
         private ReadOnlyMemory<T_MemberType_> _T_VectorMemberName_;
         //##if MemberIsObsolete
@@ -135,7 +168,44 @@ namespace T_NameSpace_.MessagePack
             get => _T_VectorMemberName_;
             set => _T_VectorMemberName_ = IfNotFrozen(ref value);
         }
-
+        //##elif MemberIsEntity
+        //##if MemberIsNullable
+        [IgnoreMember]
+        private T_MemberTypeNameSpace_.MessagePack.T_MemberTypeName_? _T_NullableEntityMemberName_;
+        [Key(T_NullableEntityMemberKey_)]
+        public T_MemberTypeNameSpace_.MessagePack.T_MemberTypeName_? T_NullableEntityMemberName_
+        {
+            get => _T_NullableEntityMemberName_;
+            set => _T_NullableEntityMemberName_ = IfNotFrozen(ref value);
+        }
+        T_MemberTypeNameSpace_.IT_MemberTypeName_? IT_EntityName_.T_NullableEntityMemberName_
+        {
+            get => _T_NullableEntityMemberName_;
+            set
+            {
+                ThrowIfFrozen();
+                _T_NullableEntityMemberName_ = value is null ? null : new T_MemberTypeNameSpace_.MessagePack.T_MemberTypeName_(value);
+            }
+        }
+        //##else
+        [IgnoreMember]
+        private T_MemberTypeNameSpace_.MessagePack.T_MemberTypeName_ _T_RequiredEntityMemberName_ = T_MemberTypeNameSpace_.MessagePack.T_MemberTypeName_.Empty;
+        [Key(T_RequiredEntityMemberKey_)]
+        public T_MemberTypeNameSpace_.MessagePack.T_MemberTypeName_ T_RequiredEntityMemberName_
+        {
+            get => _T_RequiredEntityMemberName_;
+            set => _T_RequiredEntityMemberName_ = IfNotFrozen(ref value);
+        }
+        T_MemberTypeNameSpace_.IT_MemberTypeName_ IT_EntityName_.T_RequiredEntityMemberName_
+        {
+            get => _T_RequiredEntityMemberName_;
+            set
+            {
+                ThrowIfFrozen();
+                _T_RequiredEntityMemberName_ = new T_MemberTypeNameSpace_.MessagePack.T_MemberTypeName_(value);
+            }
+        }
+        //##endif
         //##else
         //##if MemberIsNullable
         [IgnoreMember]
@@ -162,8 +232,8 @@ namespace T_NameSpace_.MessagePack
             set => _T_ScalarRequiredMemberName_ = IfNotFrozen(ref value);
         }
         //##endif
-
         //##endif
+
         //##endfor
 
         public bool Equals(T_EntityName_? other)
@@ -172,7 +242,7 @@ namespace T_NameSpace_.MessagePack
             if (other is null) return false;
             if (!base.Equals(other)) return false;
             //##foreach Members
-            //##if MemberIsArray
+            //##if MemberIsVector
             if (!_T_VectorMemberName_.Span.SequenceEqual(other.T_VectorMemberName_.Span)) return false;
             //##else
             //##if MemberIsNullable
@@ -194,7 +264,7 @@ namespace T_NameSpace_.MessagePack
             HashCode result = new HashCode();
             result.Add(base.GetHashCode());
             //##foreach Members
-            //##if MemberIsArray
+            //##if MemberIsVector
             result.Add(_T_VectorMemberName_.Length);
             for (int i = 0; i < _T_VectorMemberName_.Length; i++)
             {

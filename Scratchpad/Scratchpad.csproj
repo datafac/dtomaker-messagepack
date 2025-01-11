@@ -1,15 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DTOMaker.Models" Version="0.54.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DTOMaker.Models" Version="0.55.3-dev" />
+		<PackageReference Include="DTOMaker.Runtime" Version="0.55.3-dev" />
+		<PackageReference Include="DTOMaker.Runtime.MessagePack" Version="0.54.1" />
+		<PackageReference Include="MessagePack" Version="2.5.192" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DTOMaker.Models.MessagePack\DTOMaker.Models.MessagePack.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DTOMaker.Models.MessagePack\DTOMaker.Models.MessagePack.csproj" />
+		<ProjectReference Include="..\DTOMaker.Runtime.MessagePack\DTOMaker.Runtime.MessagePack.csproj" />
+	</ItemGroup>
 
 </Project>

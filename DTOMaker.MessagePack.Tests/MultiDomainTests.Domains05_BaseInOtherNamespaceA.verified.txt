@@ -34,11 +34,10 @@ namespace MyOrg.DomainA.MessagePack
         protected override void OnFreeze()
         {
             base.OnFreeze();
-            // todo freezable members
         }
 
         public MyBase() { }
-        public MyBase(IMyBase source, bool frozen = false) : base(source, frozen)
+        public MyBase(IMyBase source) : base(source)
         {
         }
 

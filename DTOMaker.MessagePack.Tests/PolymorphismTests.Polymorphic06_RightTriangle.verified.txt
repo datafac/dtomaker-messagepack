@@ -30,13 +30,12 @@ namespace MyOrg.Models.MessagePack
         protected override void OnFreeze()
         {
             base.OnFreeze();
-            // todo freezable members
         }
 
         protected override IFreezable OnPartCopy() => new RightTriangle(this);
 
         public RightTriangle() { }
-        public RightTriangle(IRightTriangle source, bool frozen = false) : base(source, frozen)
+        public RightTriangle(IRightTriangle source) : base(source)
         {
             _Length = source.Length;
             _Height = source.Height;

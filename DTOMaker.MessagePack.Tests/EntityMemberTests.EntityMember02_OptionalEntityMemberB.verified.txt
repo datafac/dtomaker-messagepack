@@ -10,16 +10,16 @@ using DTOMaker.Runtime.MessagePack;
 using MessagePack;
 using System;
 
-namespace MyOrg.Models.MessagePack
+namespace MyOrg.DomainB.MessagePack
 {
     [MessagePackObject]
-    public partial class MyDTO : MyOrg.Models.MessagePack.MyBase, IMyDTO, IEquatable<MyDTO>
+    public partial class MyDTO2 : DTOMaker.Runtime.MessagePack.EntityBase, IMyDTO2, IEquatable<MyDTO2>
     {
         // Derived entities: 0
 
         public new const int EntityKey = 2;
 
-        public new static MyDTO Create(int entityKey, ReadOnlyMemory<byte> buffer)
+        public new static MyDTO2 Create(int entityKey, ReadOnlyMemory<byte> buffer)
         {
             return entityKey switch
             {
@@ -30,44 +30,54 @@ namespace MyOrg.Models.MessagePack
         protected override void OnFreeze()
         {
             base.OnFreeze();
+            _Member1?.Freeze();
         }
 
-        protected override IFreezable OnPartCopy() => new MyDTO(this);
+        protected override IFreezable OnPartCopy() => new MyDTO2(this);
 
-        public MyDTO() { }
-        public MyDTO(IMyDTO source) : base(source)
+        public MyDTO2() { }
+        public MyDTO2(IMyDTO2 source) : base(source)
         {
-            _DTOField1 = source.DTOField1;
+            _Member1 = source.Member1 is null ? null : new MyOrg.DomainA.MessagePack.MyDTO1(source.Member1);
         }
 
         [IgnoreMember]
-        private Double _DTOField1 = default;
-        [Key(11)]
-        public Double DTOField1
+        private MyOrg.DomainA.MessagePack.MyDTO1? _Member1;
+        [Key(T_NullableEntityMemberKey_)]
+        public MyOrg.DomainA.MessagePack.MyDTO1? Member1
         {
-            get => _DTOField1;
-            set => _DTOField1 = IfNotFrozen(ref value);
+            get => _Member1;
+            set => _Member1 = IfNotFrozen(ref value);
+        }
+        MyOrg.DomainA.IMyDTO1? IMyDTO2.Member1
+        {
+            get => _Member1;
+            set
+            {
+                ThrowIfFrozen();
+                _Member1 = value is null ? null : new MyOrg.DomainA.MessagePack.MyDTO1(value);
+            }
         }
 
 
-        public bool Equals(MyDTO? other)
+        public bool Equals(MyDTO2? other)
         {
             if (ReferenceEquals(this, other)) return true;
             if (other is null) return false;
             if (!base.Equals(other)) return false;
-            if (_DTOField1 != other.DTOField1) return false;
+            if (_Member1 != other.Member1) return false;
             return true;
         }
 
-        public override bool Equals(object? obj) => obj is MyDTO other && Equals(other);
-        public static bool operator ==(MyDTO? left, MyDTO? right) => left is not null ? left.Equals(right) : (right is null);
-        public static bool operator !=(MyDTO? left, MyDTO? right) => left is not null ? !left.Equals(right) : (right is not null);
+        public override bool Equals(object? obj) => obj is MyDTO2 other && Equals(other);
+        public static bool operator ==(MyDTO2? left, MyDTO2? right) => left is not null ? left.Equals(right) : (right is null);
+        public static bool operator !=(MyDTO2? left, MyDTO2? right) => left is not null ? !left.Equals(right) : (right is not null);
 
         private int CalcHashCode()
         {
             HashCode result = new HashCode();
             result.Add(base.GetHashCode());
-            result.Add(_DTOField1);
+            result.Add(_Member1);
             return result.ToHashCode();
         }
 

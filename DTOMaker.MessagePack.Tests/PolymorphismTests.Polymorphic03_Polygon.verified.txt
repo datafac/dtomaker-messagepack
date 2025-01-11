@@ -45,11 +45,10 @@ namespace MyOrg.Models.MessagePack
         protected override void OnFreeze()
         {
             base.OnFreeze();
-            // todo freezable members
         }
 
         public Polygon() { }
-        public Polygon(IPolygon source, bool frozen = false) : base(source, frozen)
+        public Polygon(IPolygon source) : base(source)
         {
         }
 
